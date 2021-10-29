@@ -3,10 +3,10 @@ package AADDUA2.Music.Modelo;
 public class Cancion {
 	private String nombre;
 	private float duracion;
-	private String genero;
+	private Genero genero;
 	private int nreproducciones;
 	private Disco disco;
-	public Cancion(String nombre, float duracion, String genero, int nreproducciones, Disco disco) {
+	public Cancion(String nombre, float duracion, Genero genero, int nreproducciones, Disco disco) {
 		super();
 		this.nombre = nombre;
 		this.duracion = duracion;
@@ -29,12 +29,6 @@ public class Cancion {
 	public void setDuracion(float duracion) {
 		this.duracion = duracion;
 	}
-	public String getGenero() {
-		return genero;
-	}
-	public void setGenero(String genero) {
-		this.genero = genero;
-	}
 	public int getNreproducciones() {
 		return nreproducciones;
 	}
@@ -47,5 +41,12 @@ public class Cancion {
 	public void setDisco(Disco disco) {
 		this.disco = disco;
 	}
+	public Genero getGenero() {
+		return genero;
+	}
+	public void setGenero(Genero genero) {
+		this.genero = genero;
+	}
+	
 	
 }
