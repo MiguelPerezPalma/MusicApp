@@ -1,6 +1,6 @@
 package AADDUA2.Music.Interfaz;
 
-public interface IDAO {
+public interface IDAO<T> {
 	void guardar();
 	void actualizar();
 	void borrar();
