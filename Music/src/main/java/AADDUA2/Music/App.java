@@ -1,4 +1,4 @@
-package UA1.Chat;
+package AADDUA2.Music;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
