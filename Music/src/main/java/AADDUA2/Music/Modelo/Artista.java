@@ -1,15 +1,32 @@
 package AADDUA2.Music.Modelo;
 
+import java.util.List;
+
 public class Artista {
-	private String nombre;
-	private String nacionalidad;
-	private String foto;
-	public Artista(String nombre, String nacionalidad, String foto) {
+	protected int id;
+	protected String nombre;
+	protected String nacionalidad;
+	protected String foto;
+	protected List<Disco> discos;
+	
+	
+	public Artista(int id, String nombre, String nacionalidad, String foto, List<Disco> discos) {
 		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.nacionalidad = nacionalidad;
+		this.foto = foto;
+		this.discos = discos;
+	}
+	
+	public Artista(int id, String nombre, String nacionalidad, String foto) {
+		super();
+		this.id = id;
 		this.nombre = nombre;
 		this.nacionalidad = nacionalidad;
 		this.foto = foto;
 	}
+
 	public Artista() {
 		super();
 	}
@@ -31,5 +48,18 @@ public class Artista {
 	public void setFoto(String foto) {
 		this.foto = foto;
 	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public List<Disco> getDiscos() {
+		return discos;
+	}
+	public void setDiscos(List<Disco> discos) {
+		this.discos = discos;
+	}
+	
 	
 }

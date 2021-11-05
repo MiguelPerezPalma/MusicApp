@@ -1,0 +1,131 @@
+package AADDUA2.Music.DAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+
+import AADDUA2.Music.Interfaz.IGeneroDAO;
+import AADDUA2.Music.Modelo.Cancion;
+import AADDUA2.Music.Modelo.Genero;
+import AADDUA2.Music.Utils.Conexion;
+
+public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
+	private static final String INSERT = "INSERT INTO genero (ID,Nombre) VALUES (?,?)";
+	private static final String EDITAR = "UPDATE genero SET Nombre=? WHERE ID=?";
+	private static final String BORRAR = "DELETE FROM genero WHERE ID=?";
+	private Connection con = null;
+	public GeneroDAOMariaDB() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public GeneroDAOMariaDB(int id, String nombre, List<Cancion> canciones) {
+		super(id, nombre, canciones);
+		// TODO Auto-generated constructor stub
+	}
+
+	public GeneroDAOMariaDB(int id, String nombre) {
+		super(id, nombre);
+		// TODO Auto-generated constructor stub
+	}
+	public GeneroDAOMariaDB(Genero g) {
+		super(g.getId(), g.getNombre(),g.getCanciones());
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void guardar() {
+		if (id != -1) {
+			actualizar();
+		} else {
+			con = Conexion.getConexion();
+			if (con != null) {
+				PreparedStatement ps=null;
+				ResultSet rs=null;
+				try {
+					ps = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
+
+					ps.setInt(1, this.id);
+					ps.setString(2, this.nombre);
+					ps.executeUpdate();
+					// Solo lo puedes ejecutar si has puesto RETURN_GENERATED_KEYS
+					rs = ps.getGeneratedKeys();
+					if (rs.next()) {
+						this.id = rs.getInt(1);
+					}
+					// fin de extraer el id generado automaticamente en la db
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					try {
+						ps.close();
+						rs.close();
+					}catch (SQLException e) {
+						// TODO: handle exception
+					}
+				}
+			}
+		}
+		
+	}
+
+	@Override
+	public void actualizar() {
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			try {
+				ps = con.prepareStatement(EDITAR);
+
+				ps.setString(1, this.nombre);
+				ps.setInt(2, this.id);
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		
+	}
+
+	@Override
+	public void borrar() {
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			try {
+				ps = con.prepareStatement(BORRAR);
+				ps.setInt(1, this.id);
+				ps.executeUpdate();
+				this.id=-1;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		
+	}
+
+	@Override
+	public List<Genero> mostrarPorNombre(String nombre) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

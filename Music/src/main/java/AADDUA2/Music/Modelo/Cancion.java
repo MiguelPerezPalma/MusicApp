@@ -1,13 +1,16 @@
 package AADDUA2.Music.Modelo;
 
 public class Cancion {
-	private String nombre;
-	private float duracion;
-	private Genero genero;
-	private int nreproducciones;
-	private Disco disco;
-	public Cancion(String nombre, float duracion, Genero genero, int nreproducciones, Disco disco) {
+	protected int id;
+	protected String nombre;
+	protected float duracion;
+	protected Genero genero;
+	protected int nreproducciones;
+	protected Disco disco;
+	
+	public Cancion(int id, String nombre, float duracion, Genero genero, int nreproducciones, Disco disco) {
 		super();
+		this.id = id;
 		this.nombre = nombre;
 		this.duracion = duracion;
 		this.genero = genero;
@@ -46,6 +49,12 @@ public class Cancion {
 	}
 	public void setGenero(Genero genero) {
 		this.genero = genero;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	

@@ -3,10 +3,11 @@ package AADDUA2.Music.Modelo;
 import java.util.List;
 
 public class Usuario {
-	private String nombre;
-	private String correo;
-	private String foto;
-	private List<ListaReproduccion>listasDeRepro;
+	protected int id;
+	protected String nombre;
+	protected String correo;
+	protected String foto;
+	protected List<ListaReproduccion>listasDeRepro;
 	public Usuario(String nombre, String correo, String foto, List<ListaReproduccion> listasDeRepro) {
 		super();
 		this.nombre = nombre;
@@ -14,8 +15,24 @@ public class Usuario {
 		this.foto = foto;
 		this.listasDeRepro = listasDeRepro;
 	}
+	
+	public Usuario(int id, String nombre, String correo, String foto) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.correo = correo;
+		this.foto = foto;
+	}
+
 	public Usuario() {
 		super();
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getNombre() {
 		return nombre;

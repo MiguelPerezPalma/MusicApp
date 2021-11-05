@@ -1,16 +1,27 @@
 package AADDUA2.Music.Modelo;
 
+import java.util.List;
+
 public class Genero {
-	private int id;
-	private String nombre;
+	protected int id;
+	protected String nombre;
+	protected List<Cancion> canciones;
+	public Genero(int id, String nombre, List<Cancion> canciones) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.canciones = canciones;
+	}
+	
+	public Genero() {
+		super();
+	}
 	public Genero(int id, String nombre) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 	}
-	public Genero() {
-		super();
-	}
+
 	public int getId() {
 		return id;
 	}
@@ -23,5 +34,12 @@ public class Genero {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	public List<Cancion> getCanciones() {
+		return canciones;
+	}
+	public void setCanciones(List<Cancion> canciones) {
+		this.canciones = canciones;
+	}
+	
 	
 }

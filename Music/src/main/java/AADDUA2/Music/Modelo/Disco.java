@@ -1,15 +1,20 @@
 package AADDUA2.Music.Modelo;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 public class Disco {
-	private String nombre;
-	private LocalDateTime fechaPublicacion;
-	private String foto;
-	private int nReproducciones;
-	private Artista artista;
-	public Disco(String nombre, LocalDateTime fechaPublicacion, String foto, int nReproducciones, Artista artista) {
+	protected int id;
+	protected String nombre;
+	protected Date fechaPublicacion;
+	protected String foto;
+	protected int nReproducciones;
+	protected Artista artista;
+	
+	public Disco(int id, String nombre, Date fechaPublicacion, String foto, int nReproducciones,
+			Artista artista) {
 		super();
+		this.id = id;
 		this.nombre = nombre;
 		this.fechaPublicacion = fechaPublicacion;
 		this.foto = foto;
@@ -25,10 +30,10 @@ public class Disco {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public LocalDateTime getFechaPublicacion() {
+	public Date getFechaPublicacion() {
 		return fechaPublicacion;
 	}
-	public void setFechaPublicacion(LocalDateTime fechaPublicacion) {
+	public void Date(Date fechaPublicacion) {
 		this.fechaPublicacion = fechaPublicacion;
 	}
 	public String getFoto() {
@@ -48,6 +53,12 @@ public class Disco {
 	}
 	public void setArtista(Artista artista) {
 		this.artista = artista;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	
