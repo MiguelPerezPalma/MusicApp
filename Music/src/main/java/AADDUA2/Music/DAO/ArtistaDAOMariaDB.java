@@ -10,12 +10,19 @@ import java.util.List;
 import AADDUA2.Music.Interfaz.IArtistaDAO;
 import AADDUA2.Music.Modelo.Artista;
 import AADDUA2.Music.Modelo.Disco;
+import AADDUA2.Music.Modelo.Genero;
+import AADDUA2.Music.Modelo.ListaReproduccion;
+import AADDUA2.Music.Modelo.Usuario;
 import AADDUA2.Music.Utils.Conexion;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 	private static final String INSERT = "INSERT INTO artista (Id,Nombre,Nacionalidad,Foto) VALUES (?,?,?,?)";
 	private static final String EDITAR = "UPDATE artista SET Nombre=?,Nacionalidad=?,Foto=? WHERE Id=?";
 	private static final String BORRAR = "DELETE FROM artista WHERE Id=?";
+	private static final String MOSTRARTODOS = "SELECT Id,Nombre,Nacionalidad,Foto FROM artista";
+	private static final String MOSTRARPORID = "SELECT Id,Nombre,Nacionalidad,Foto FROM artista WHERE Id=?";
 	private Connection con = null;
 	
 	
@@ -155,4 +162,68 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 		
 	}
 
+
+	@Override
+	public ObservableList<Artista> buscarTodosArtistas() {
+		ObservableList<Artista> resultado=FXCollections.observableArrayList();
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARTODOS);
+				rs=ps.executeQuery();
+				while(rs.next()) {
+					resultado.add(new ArtistaDAOMariaDB(
+							rs.getInt("Id"),
+							rs.getString("Nombre"),
+							rs.getString("Nacionalidad"),
+							rs.getString("Foto")
+							));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
+	}
+	public Artista mostrar(int id) {
+		Artista resultado=new ArtistaDAOMariaDB();
+		
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARPORID);
+				ps.setInt(1,id);
+				rs=ps.executeQuery();
+				if(rs.next()) {
+					resultado=new ArtistaDAOMariaDB(rs.getInt("Id"),
+							rs.getString("Nombre"),
+							rs.getString("Nacionalidad"),
+							rs.getString("Foto"));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
+	}
 }

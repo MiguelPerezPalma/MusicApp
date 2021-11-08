@@ -5,17 +5,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import AADDUA2.Music.Interfaz.IUsuarioDAO;
 import AADDUA2.Music.Modelo.ListaReproduccion;
 import AADDUA2.Music.Modelo.Usuario;
 import AADDUA2.Music.Utils.Conexion;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 	private static final String INSERT = "INSERT INTO usuario (Id,Nombre,Correo,Foto) VALUES (?,?,?,?)";
 	private static final String EDITAR = "UPDATE listareproduccion SET Nombre=?,Correo=?,Foto=? WHERE ID=?";
 	private static final String BORRAR = "DELETE FROM listareproduccion WHERE Id=?";
+	private static final String MOSTRARTODOS = "SELECT Id,Nombre,Correo,Foto FROM usuario";
+	private static final String MOSTRARPORID = "SELECT Id,Nombre,Correo,Foto FROM usuario WHERE Id=?";
 	private Connection con = null;
 	public UsuarioDAOMariaDB() {
 		super();
@@ -141,6 +146,69 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 	public void removeLReproduccion(ListaReproduccion l) {
 		// TODO Auto-generated method stub
 		
+	}
+	public Usuario mostrar(int id) {
+		Usuario resultado=new UsuarioDAOMariaDB();
+		
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARPORID);
+				ps.setInt(1,id);
+				rs=ps.executeQuery();
+				if(rs.next()) {
+					resultado=new UsuarioDAOMariaDB(rs.getInt("Id"),
+							rs.getString("Nombre"),
+							rs.getString("Correo"),
+							rs.getString("Foto"));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
+	}
+	@Override
+	public ObservableList<Usuario> buscarTodosUsuarios() {
+		ObservableList<Usuario> resultado=FXCollections.observableArrayList();
+		
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARTODOS);
+				rs=ps.executeQuery();
+				while(rs.next()) {
+					resultado.add(new UsuarioDAOMariaDB(
+							rs.getInt("Id"),
+							rs.getString("Nombre"),
+							rs.getString("Correo"),
+							rs.getString("Foto")));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
 	}
 
 }

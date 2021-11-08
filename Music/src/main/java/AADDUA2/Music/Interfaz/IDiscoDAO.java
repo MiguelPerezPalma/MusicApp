@@ -4,8 +4,10 @@ import java.util.List;
 
 import AADDUA2.Music.Modelo.Cancion;
 import AADDUA2.Music.Modelo.Disco;
+import javafx.collections.ObservableList;
 
 public interface IDiscoDAO extends IDAO<Disco>{
 	List<Disco> mostrarPorNombre(String nombre);
 	void addCancion(Cancion c);
+	ObservableList<Disco> buscarTodosDisco() ;
 }

@@ -8,21 +8,29 @@ public class ListaReproduccion {
 	protected String Descripccion;
 	protected Usuario creador;
 	protected List<Usuario> subscriptores;
-	public ListaReproduccion(int id, String nombre, String descripccion, Usuario creador, List<Usuario> subscriptores) {
+	protected List<Cancion> canciones;
+	
+	public ListaReproduccion(int id, String nombre, String descripccion, Usuario creador, List<Usuario> subscriptores,
+			List<Cancion> canciones) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		Descripccion = descripccion;
 		this.creador = creador;
 		this.subscriptores = subscriptores;
+		this.canciones = canciones;
 	}
-	
+
 	public ListaReproduccion(int id, String nombre, String descripccion, Usuario creador) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		Descripccion = descripccion;
 		this.creador = creador;
+	}
+
+	public ListaReproduccion() {
+		super();
 	}
 
 	public int getId() {

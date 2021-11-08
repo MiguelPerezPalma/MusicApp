@@ -10,12 +10,17 @@ import java.util.List;
 import AADDUA2.Music.Interfaz.IGeneroDAO;
 import AADDUA2.Music.Modelo.Cancion;
 import AADDUA2.Music.Modelo.Genero;
+import AADDUA2.Music.Modelo.Usuario;
 import AADDUA2.Music.Utils.Conexion;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 	private static final String INSERT = "INSERT INTO genero (ID,Nombre) VALUES (?,?)";
 	private static final String EDITAR = "UPDATE genero SET Nombre=? WHERE ID=?";
 	private static final String BORRAR = "DELETE FROM genero WHERE ID=?";
+	private static final String MOSTRARTODOS = "SELECT ID,Nombre FROM genero";
+	private static final String MOSTRARPORID = "SELECT ID,Nombre FROM genero WHERE ID=?";
 	private Connection con = null;
 	public GeneroDAOMariaDB() {
 		super();
@@ -126,6 +131,66 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 	public List<Genero> mostrarPorNombre(String nombre) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public ObservableList<Genero> buscarTodosGenero() {
+		ObservableList<Genero> resultado=FXCollections.observableArrayList();
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARTODOS);
+				rs=ps.executeQuery();
+				while(rs.next()) {
+					resultado.add(new GeneroDAOMariaDB(
+							rs.getInt("Id"),
+							rs.getString("Nombre")
+							));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
+	}
+	public Genero mostrar(int id) {
+		Genero resultado=new GeneroDAOMariaDB();
+		
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARPORID);
+				ps.setInt(1,id);
+				rs=ps.executeQuery();
+				if(rs.next()) {
+					resultado=new GeneroDAOMariaDB(rs.getInt("Id"),
+							rs.getString("Nombre"));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
 	}
 
 }

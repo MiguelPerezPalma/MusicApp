@@ -11,12 +11,18 @@ import AADDUA2.Music.Interfaz.IDiscoDAO;
 import AADDUA2.Music.Modelo.Artista;
 import AADDUA2.Music.Modelo.Cancion;
 import AADDUA2.Music.Modelo.Disco;
+import AADDUA2.Music.Modelo.ListaReproduccion;
+import AADDUA2.Music.Modelo.Usuario;
 import AADDUA2.Music.Utils.Conexion;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 	private static final String INSERT = "INSERT INTO disco (Id,Nombre,FechaPublicacion,Foto,NReproducciones,Id_Artista) VALUES (?,?,?,?,?,?)";
 	private static final String EDITAR = "UPDATE disco SET Nombre=?,FechaPublicacion=?,Foto=?,NReproducciones=?,Id_Artista=? WHERE Id=?";
-	private static final String BORRAR = "DELETE FROM disco WHERE id=?";
+	private static final String BORRAR = "DELETE FROM disco WHERE Id=?";
+	private static final String MOSTRARTODOS = "SELECT Id,Nombre,FechaPublicacion,Foto,NReproducciones,Id_Artista FROM disco";
+	private static final String MOSTRARPORID = "SELECT Id,Nombre,FechaPublicacion,Foto,NReproducciones,Id_Artista FROM disco WHERE Id=?";
 	Connection con=null;
 	
 	public DiscoDAOMariaDB() {
@@ -140,6 +146,82 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 	public void addCancion(Cancion c) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public ObservableList<Disco> buscarTodosDisco() {
+		ObservableList<Disco> resultado=FXCollections.observableArrayList();
+		
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARTODOS);
+				rs=ps.executeQuery();
+				
+				while(rs.next()) {
+					
+					ArtistaDAOMariaDB x=new ArtistaDAOMariaDB();
+					Artista xs=x.mostrar(rs.getInt("id_sede"));
+					
+					resultado.add(new Disco(rs.getInt("Id"),
+							rs.getString("Nombre"),
+							rs.getDate("FechaPublicacion"),
+							rs.getString("Foto"),
+							rs.getInt("NReproducciones"),
+									xs));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
+	}
+	public Disco mostrar(int id) {
+		Disco resultado=new Disco();
+		
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARPORID);
+				ps.setInt(1,id);
+				rs=ps.executeQuery();
+				if(rs.next()) {
+					ArtistaDAOMariaDB x=new ArtistaDAOMariaDB();
+					Artista xs=x.mostrar(rs.getInt("id_sede"));
+					
+					resultado=new Disco(rs.getInt("Id"),
+							rs.getString("Nombre"),
+							rs.getDate("FechaPublicacion"),
+							rs.getString("Foto"),
+							rs.getInt("NReproducciones"),
+									xs);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
 	}
 
 }
