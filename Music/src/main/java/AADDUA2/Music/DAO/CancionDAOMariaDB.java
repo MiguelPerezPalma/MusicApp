@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import AADDUA2.Music.Interfaz.ICancionDAO;
@@ -35,11 +36,7 @@ public class CancionDAOMariaDB extends Cancion implements ICancionDAO{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public CancionDAOMariaDB(int id, String nombre, float duracion, Genero genero, int nreproducciones, Disco disco,
-			List<ListaReproduccion> lrepro) {
-		super(id, nombre, duracion, genero, nreproducciones, disco, lrepro);
-		// TODO Auto-generated constructor stub
-	}
+
 
 	public CancionDAOMariaDB(Cancion c) {
 		super(c.getId(), c.getNombre(), c.getDuracion(), c.getGenero(), c.getNreproducciones(), c.getDisco());
@@ -142,13 +139,47 @@ public class CancionDAOMariaDB extends Cancion implements ICancionDAO{
 
 	@Override
 	public List<Cancion> mostrarPorNombre(String nombre) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Cancion> resultado=new ArrayList<Cancion>();
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARPORNOMBRE);
+				ps.setString(1, nombre);
+				rs=ps.executeQuery();
+				while(rs.next()) {
+					GeneroDAOMariaDB x=new GeneroDAOMariaDB();
+					Genero xs=x.mostrar(rs.getInt("Id_Genero"));
+					
+					DiscoDAOMariaDB dx=new DiscoDAOMariaDB();
+					Disco xd=dx.mostrar(rs.getInt("Id_Disco"));
+					
+					resultado.add(new Cancion(rs.getInt("Id"),
+							rs.getString("Nombre"),
+							rs.getFloat("Duracion"),
+							xs,
+							rs.getInt("NReproducciones"),
+							xd));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
 	}
 
 	@Override
-	public ObservableList<Cancion> buscarTodasCancion() {
-		ObservableList<Cancion> resultado=FXCollections.observableArrayList();
+	public List<Cancion> buscarTodasCancion() {
+		List<Cancion> resultado=new ArrayList<Cancion>();
 		
 		con = Conexion.getConexion();
 		if (con != null) {

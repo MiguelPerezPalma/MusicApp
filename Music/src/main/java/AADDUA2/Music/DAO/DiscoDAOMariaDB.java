@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
 import AADDUA2.Music.Interfaz.IDiscoDAO;
 import AADDUA2.Music.Modelo.Artista;
 import AADDUA2.Music.Modelo.Cancion;
 import AADDUA2.Music.Modelo.Disco;
+import AADDUA2.Music.Modelo.Genero;
 import AADDUA2.Music.Modelo.ListaReproduccion;
 import AADDUA2.Music.Modelo.Usuario;
 import AADDUA2.Music.Utils.Conexion;
@@ -23,6 +25,7 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 	private static final String BORRAR = "DELETE FROM disco WHERE Id=?";
 	private static final String MOSTRARTODOS = "SELECT Id,Nombre,FechaPublicacion,Foto,NReproducciones,Id_Artista FROM disco";
 	private static final String MOSTRARPORID = "SELECT Id,Nombre,FechaPublicacion,Foto,NReproducciones,Id_Artista FROM disco WHERE Id=?";
+	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,FechaPublicacion,Foto,NReproducciones,Id_Artista FROM disco WHERE Nombre=?";
 	Connection con=null;
 	
 	public DiscoDAOMariaDB() {
@@ -34,6 +37,13 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 	public DiscoDAOMariaDB(int id, String nombre, Date fechaPublicacion, String foto, int nReproducciones,
 			Artista artista) {
 		super(id, nombre, fechaPublicacion, foto, nReproducciones, artista);
+		// TODO Auto-generated constructor stub
+	}
+	
+
+	public DiscoDAOMariaDB(int id, String nombre, java.sql.Date fechaPublicacion, String foto, int nReproducciones,
+			Artista artista, List<Cancion> canciones) {
+		super(id, nombre, fechaPublicacion, foto, nReproducciones, artista, canciones);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -138,20 +148,60 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 
 	@Override
 	public List<Disco> mostrarPorNombre(String nombre) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Disco> resultado=new ArrayList<Disco>();
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARPORNOMBRE);
+				ps.setString(1, nombre);
+				rs=ps.executeQuery();
+				while(rs.next()) {
+					ArtistaDAOMariaDB x=new ArtistaDAOMariaDB();
+					Artista xs=x.mostrar(rs.getInt("Id_Artista"));
+					
+					resultado.add(new Disco(rs.getInt("Id"),
+							rs.getString("Nombre"),
+							rs.getDate("FechaPublicacion"),
+							rs.getString("Foto"),
+							rs.getInt("NReproducciones"),
+									xs));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
 	}
 
 	@Override
 	public void addCancion(Cancion c) {
-		// TODO Auto-generated method stub
-		
+		if(c!=null) {
+			guardar();
+			c.setDisco(this);
+			CancionDAOMariaDB x=new CancionDAOMariaDB(c);
+			x.guardar();
+			if(!this.canciones.contains(c)) {
+				this.canciones.add(c);
+			}
+			
+			guardar();  
+		}
 	}
 
 
 	@Override
-	public ObservableList<Disco> buscarTodosDisco() {
-		ObservableList<Disco> resultado=FXCollections.observableArrayList();
+	public List<Disco> buscarTodosDisco() {
+		List<Disco> resultado=new ArrayList<Disco>();
 		
 		con = Conexion.getConexion();
 		if (con != null) {
@@ -164,7 +214,7 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 				while(rs.next()) {
 					
 					ArtistaDAOMariaDB x=new ArtistaDAOMariaDB();
-					Artista xs=x.mostrar(rs.getInt("id_sede"));
+					Artista xs=x.mostrar(rs.getInt("Id_Artista"));
 					
 					resultado.add(new Disco(rs.getInt("Id"),
 							rs.getString("Nombre"),

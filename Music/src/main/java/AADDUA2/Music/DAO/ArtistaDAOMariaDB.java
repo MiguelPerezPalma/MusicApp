@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import AADDUA2.Music.Interfaz.IArtistaDAO;
@@ -23,6 +24,7 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 	private static final String BORRAR = "DELETE FROM artista WHERE Id=?";
 	private static final String MOSTRARTODOS = "SELECT Id,Nombre,Nacionalidad,Foto FROM artista";
 	private static final String MOSTRARPORID = "SELECT Id,Nombre,Nacionalidad,Foto FROM artista WHERE Id=?";
+	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Nacionalidad,Foto FROM artista WHERE Nombre=?";
 	private Connection con = null;
 	
 	
@@ -143,8 +145,41 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 
 	@Override
 	public List<Artista> mostrarPorNombre(String nombre) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Artista> resultado=new ArrayList<Artista>();
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARPORNOMBRE);
+				ps.setString(1, nombre);
+				rs=ps.executeQuery();
+				if(rs.next()) {
+					ArtistaDAOMariaDB x=new ArtistaDAOMariaDB();
+					Artista xs=x.mostrar(rs.getInt("id_sede"));
+					
+					while(rs.next()) {
+						resultado.add(new ArtistaDAOMariaDB(
+								rs.getInt("Id"),
+								rs.getString("Nombre"),
+								rs.getString("Nacionalidad"),
+								rs.getString("Foto")
+								));
+					}
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
 	}
 
 	@Override
@@ -164,8 +199,8 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 
 
 	@Override
-	public ObservableList<Artista> buscarTodosArtistas() {
-		ObservableList<Artista> resultado=FXCollections.observableArrayList();
+	public List<Artista> buscarTodosArtistas() {
+		List<Artista> resultado=new ArrayList<Artista>();
 		con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
@@ -225,5 +260,11 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 			}
 		}
 		return resultado;
+	}
+	
+	@Override
+	public List<Disco> getDiscos() {
+		// TODO Auto-generated method stub
+		return super.getDiscos();
 	}
 }

@@ -5,10 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import AADDUA2.Music.Interfaz.ILReproduccionDAO;
 import AADDUA2.Music.Modelo.Cancion;
+import AADDUA2.Music.Modelo.Genero;
 import AADDUA2.Music.Modelo.ListaReproduccion;
 import AADDUA2.Music.Modelo.Usuario;
 import AADDUA2.Music.Utils.Conexion;
@@ -21,6 +23,7 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 	private static final String BORRAR = "DELETE FROM listareproduccion WHERE Id=?";
 	private static final String MOSTRARTODOS = "SELECT Id,Nombre,Descripcion,Id_Creador FROM listareproduccion";
 	private static final String MOSTRARPORID = "SELECT Id,Nombre,Descripcion,Id_Creador FROM listareproduccion  WHERE Id=?";
+	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Descripcion,Id_Creador FROM listareproduccion  WHERE Id=?";
 	
 	private Connection con = null;
 	
@@ -139,8 +142,37 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 
 	@Override
 	public List<ListaReproduccion> mostrarPorNombre(String nombre) {
-		
-		return null;
+		List<ListaReproduccion> resultado=new ArrayList<ListaReproduccion>();
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARPORNOMBRE);
+				ps.setString(1, nombre);
+				rs=ps.executeQuery();
+				while(rs.next()) {
+					UsuarioDAOMariaDB x=new UsuarioDAOMariaDB();
+					Usuario xs=x.mostrar(rs.getInt("Id_Creador"));
+					
+					resultado.add(new ListaReproduccion(rs.getInt("Id"),
+							rs.getString("Nombre"),
+							rs.getString("Descripcion"),
+									xs));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
 	}
 	public ListaReproduccion mostrar(int id) {
 		ListaReproduccion resultado=new ListaReproduccion();
@@ -155,7 +187,7 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 				rs=ps.executeQuery();
 				if(rs.next()) {
 					UsuarioDAOMariaDB x=new UsuarioDAOMariaDB();
-					Usuario xs=x.mostrar(rs.getInt("id_sede"));
+					Usuario xs=x.mostrar(rs.getInt("Id_Creador"));
 					
 					resultado=new ListaReproduccion(rs.getInt("Id"),
 							rs.getString("Nombre"),
@@ -179,8 +211,8 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 
 
 	@Override
-	public ObservableList<ListaReproduccion> buscarTodosLreproduccion() {
-		ObservableList<ListaReproduccion> resultado=FXCollections.observableArrayList();
+	public List<ListaReproduccion> buscarTodosLreproduccion() {
+		List<ListaReproduccion> resultado=new ArrayList<ListaReproduccion>();
 		
 		con = Conexion.getConexion();
 		if (con != null) {

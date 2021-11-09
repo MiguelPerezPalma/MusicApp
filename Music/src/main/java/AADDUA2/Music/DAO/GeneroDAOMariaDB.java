@@ -5,11 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import AADDUA2.Music.Interfaz.IGeneroDAO;
 import AADDUA2.Music.Modelo.Cancion;
 import AADDUA2.Music.Modelo.Genero;
+import AADDUA2.Music.Modelo.ListaReproduccion;
 import AADDUA2.Music.Modelo.Usuario;
 import AADDUA2.Music.Utils.Conexion;
 import javafx.collections.FXCollections;
@@ -21,6 +23,8 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 	private static final String BORRAR = "DELETE FROM genero WHERE ID=?";
 	private static final String MOSTRARTODOS = "SELECT ID,Nombre FROM genero";
 	private static final String MOSTRARPORID = "SELECT ID,Nombre FROM genero WHERE ID=?";
+	private static final String MOSTRARPORNOMBRE = "SELECT ID,Nombre FROM genero WHERE Nombre=?";
+
 	private Connection con = null;
 	public GeneroDAOMariaDB() {
 		super();
@@ -129,13 +133,42 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 
 	@Override
 	public List<Genero> mostrarPorNombre(String nombre) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Genero> resultado=new ArrayList<Genero>();
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARPORNOMBRE);
+				ps.setString(1, nombre);
+				rs=ps.executeQuery();
+				while(rs.next()) {
+					UsuarioDAOMariaDB x=new UsuarioDAOMariaDB();
+					Usuario xs=x.mostrar(rs.getInt("id_sede"));
+					
+					resultado.add(new GeneroDAOMariaDB(
+							rs.getInt("Id"),
+							rs.getString("Nombre")
+							));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
 	}
 
 	@Override
-	public ObservableList<Genero> buscarTodosGenero() {
-		ObservableList<Genero> resultado=FXCollections.observableArrayList();
+	public List<Genero> buscarTodosGenero() {
+		List<Genero> resultado=new ArrayList<Genero>();
 		con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
@@ -191,6 +224,21 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 			}
 		}
 		return resultado;
+	}
+
+	@Override
+	public void addCancion(Cancion c) {
+		if(c!=null) {
+			guardar();
+			c.setGenero(this);
+			CancionDAOMariaDB x=new CancionDAOMariaDB(c);
+			x.guardar();
+			if(!this.canciones.contains(c)) {
+				this.canciones.add(c);
+			}
+			guardar();  
+		}
+		
 	}
 
 }

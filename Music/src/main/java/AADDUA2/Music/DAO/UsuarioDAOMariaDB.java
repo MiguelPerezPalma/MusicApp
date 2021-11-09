@@ -21,6 +21,7 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 	private static final String BORRAR = "DELETE FROM listareproduccion WHERE Id=?";
 	private static final String MOSTRARTODOS = "SELECT Id,Nombre,Correo,Foto FROM usuario";
 	private static final String MOSTRARPORID = "SELECT Id,Nombre,Correo,Foto FROM usuario WHERE Id=?";
+	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Correo,Foto FROM usuario  WHERE Nombre=?";
 	private Connection con = null;
 	public UsuarioDAOMariaDB() {
 		super();
@@ -132,19 +133,63 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 
 	@Override
 	public List<Usuario> mostrarPorNombre(String nombre) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Usuario> resultado=new ArrayList<Usuario>();
+		con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARPORNOMBRE);
+				ps.setString(1, nombre);
+				rs=ps.executeQuery();
+				while(rs.next()) {
+					resultado.add(new UsuarioDAOMariaDB(
+							rs.getInt("Id"),
+							rs.getString("Nombre"),
+							rs.getString("Correo"),
+							rs.getString("Foto")));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
 	}
 
 	@Override
 	public void addLReproduccion(ListaReproduccion l) {
-		// TODO Auto-generated method stub
+		if(l!=null) {
+			guardar();
+			l.setCreador(this);
+			LReproduccionDAOMariaDB x=new LReproduccionDAOMariaDB(l);
+			x.guardar();
+			if(!this.listasDeRepro.contains(l)) {
+				this.listasDeRepro.add(l);
+			}
+			guardar();
+		}
 		
 	}
 
 	@Override
 	public void removeLReproduccion(ListaReproduccion l) {
-		// TODO Auto-generated method stub
+		if(l!=null) {
+			LReproduccionDAOMariaDB x=new LReproduccionDAOMariaDB(l);
+			x.borrar();
+			if(this.listasDeRepro.contains(l)) {
+				this.listasDeRepro.remove(l);
+				guardar();  //opcional
+			}
+			
+		}
 		
 	}
 	public Usuario mostrar(int id) {
@@ -179,8 +224,8 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 		return resultado;
 	}
 	@Override
-	public ObservableList<Usuario> buscarTodosUsuarios() {
-		ObservableList<Usuario> resultado=FXCollections.observableArrayList();
+	public List<Usuario> buscarTodosUsuarios() {
+		List<Usuario> resultado=new ArrayList<Usuario>();
 		
 		con = Conexion.getConexion();
 		if (con != null) {

@@ -9,7 +9,6 @@ public class Cancion {
 	protected Genero genero;
 	protected int nreproducciones;
 	protected Disco disco;
-	protected List<ListaReproduccion> Lrepro;
 	
 	public Cancion(int id, String nombre, float duracion, Genero genero, int nreproducciones, Disco disco) {
 		super();
@@ -21,17 +20,6 @@ public class Cancion {
 		this.disco = disco;
 	}
 	
-	public Cancion(int id, String nombre, float duracion, Genero genero, int nreproducciones, Disco disco,
-			List<ListaReproduccion> lrepro) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.duracion = duracion;
-		this.genero = genero;
-		this.nreproducciones = nreproducciones;
-		this.disco = disco;
-		Lrepro = lrepro;
-	}
 
 	public Cancion() {
 		super();
