@@ -16,38 +16,51 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
-	private static final String INSERT = "INSERT INTO usuario (Id,Nombre,Correo,Foto) VALUES (?,?,?,?)";
-	private static final String EDITAR = "UPDATE listareproduccion SET Nombre=?,Correo=?,Foto=? WHERE ID=?";
-	private static final String BORRAR = "DELETE FROM listareproduccion WHERE Id=?";
-	private static final String MOSTRARTODOS = "SELECT Id,Nombre,Correo,Foto FROM usuario";
-	private static final String MOSTRARPORID = "SELECT Id,Nombre,Correo,Foto FROM usuario WHERE Id=?";
-	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Correo,Foto FROM usuario  WHERE Nombre=?";
-	private Connection con = null;
+	private static final String INSERT = "INSERT INTO usuario (Id,Nombre,Correo,Foto,Contraseña) VALUES (?,?,?,?,?)";
+	private static final String EDITAR = "UPDATE usuario SET Nombre=?,Correo=?,Foto=?,Contraseña=? WHERE ID=?";
+	private static final String BORRAR = "DELETE FROM usuario WHERE Id=?";
+	private static final String MOSTRARTODOS = "SELECT Id,Nombre,Correo,Foto,Contraseña FROM usuario";
+	private static final String MOSTRARPORID = "SELECT Id,Nombre,Correo,Foto,Contraseña FROM usuario WHERE Id=?";
+	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Correo,Foto,Contraseña FROM usuario  WHERE Nombre=?";
+	
 	public UsuarioDAOMariaDB() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public UsuarioDAOMariaDB(String nombre, String correo, String foto, List<ListaReproduccion> listasDeRepro) {
-		super(nombre, correo, foto, listasDeRepro);
+	
+	public UsuarioDAOMariaDB(int id, String nombre, String correo, String foto, String contraseña,
+			List<ListaReproduccion> listasDeRepro) {
+		super(id, nombre, correo, foto, contraseña, listasDeRepro);
 		// TODO Auto-generated constructor stub
 	}
 
-	public UsuarioDAOMariaDB(int id, String nombre, String correo, String foto) {
-		super(id, nombre, correo, foto);
+
+	public UsuarioDAOMariaDB(int id, String nombre, String correo, String foto, String contraseña) {
+		super(id, nombre, correo, foto, contraseña);
 		// TODO Auto-generated constructor stub
 	}
+
+
+	public UsuarioDAOMariaDB(String nombre, String correo, String foto, String contraseña) {
+		super(nombre, correo, foto, contraseña);
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public UsuarioDAOMariaDB(Usuario u) {
-		super(u.getId(), u.getNombre(), u.getCorreo(), u.getFoto());
+		super(u.getId(), u.getNombre(), u.getCorreo(), u.getFoto(),u.getContraseña());
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
 	@Override
 	public void guardar() {
 		if (id != -1) {
 			actualizar();
 		} else {
-			con = Conexion.getConexion();
+			Connection con = Conexion.getConexion();
 			if (con != null) {
 				PreparedStatement ps=null;
 				ResultSet rs=null;
@@ -58,6 +71,7 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 					ps.setString(2, this.nombre);
 					ps.setString(3, this.correo);
 					ps.setString(4, this.foto);
+					ps.setString(5, this.contraseña);
 					ps.executeUpdate();
 					// Solo lo puedes ejecutar si has puesto RETURN_GENERATED_KEYS
 					rs = ps.getGeneratedKeys();
@@ -83,7 +97,7 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 
 	@Override
 	public void actualizar() {
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			try {
@@ -91,7 +105,8 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 				ps.setString(1, this.nombre);
 				ps.setString(2, this.correo);
 				ps.setString(3, this.foto);
-				ps.setInt(4, this.id);
+				ps.setString(4, this.contraseña);
+				ps.setInt(5, this.id);
 				ps.executeUpdate();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -109,7 +124,7 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 
 	@Override
 	public void borrar() {
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			try {
@@ -134,7 +149,7 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 	@Override
 	public List<Usuario> mostrarPorNombre(String nombre) {
 		List<Usuario> resultado=new ArrayList<Usuario>();
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
@@ -147,7 +162,8 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 							rs.getInt("Id"),
 							rs.getString("Nombre"),
 							rs.getString("Correo"),
-							rs.getString("Foto")));
+							rs.getString("Foto"),
+							rs.getString("Contraseña")));
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -195,7 +211,7 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 	public Usuario mostrar(int id) {
 		Usuario resultado=new UsuarioDAOMariaDB();
 		
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
@@ -207,7 +223,8 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 					resultado=new UsuarioDAOMariaDB(rs.getInt("Id"),
 							rs.getString("Nombre"),
 							rs.getString("Correo"),
-							rs.getString("Foto"));
+							rs.getString("Foto"),
+							rs.getString("Contraseña"));
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -227,7 +244,7 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 	public List<Usuario> buscarTodosUsuarios() {
 		List<Usuario> resultado=new ArrayList<Usuario>();
 		
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
@@ -239,7 +256,8 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 							rs.getInt("Id"),
 							rs.getString("Nombre"),
 							rs.getString("Correo"),
-							rs.getString("Foto")));
+							rs.getString("Foto"),
+							rs.getString("Contraseña")));
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

@@ -25,7 +25,6 @@ public class CancionDAOMariaDB extends Cancion implements ICancionDAO{
 	private static final String MOSTRARTODOS = "SELECT Id,Nombre,Duracion,NReproducciones,Id_Genero,Id_Disco FROM cancion";
 	private static final String MOSTRARPORID = "SELECT Id,Nombre,Duracion,NReproducciones,Id_Genero,Id_Disco FROM cancion  WHERE Id=?";
 	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Duracion,NReproducciones,Id_Genero,Id_Disco FROM cancion  WHERE Nombre=?";
-	private Connection con = null;
 	public CancionDAOMariaDB() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -38,6 +37,16 @@ public class CancionDAOMariaDB extends Cancion implements ICancionDAO{
 	
 
 
+	public CancionDAOMariaDB(int id) {
+		super(id);
+		// TODO Auto-generated constructor stub
+	}
+
+	public CancionDAOMariaDB(String nombre, float duracion, Genero genero, int nreproducciones, Disco disco) {
+		super(nombre, duracion, genero, nreproducciones, disco);
+		// TODO Auto-generated constructor stub
+	}
+
 	public CancionDAOMariaDB(Cancion c) {
 		super(c.getId(), c.getNombre(), c.getDuracion(), c.getGenero(), c.getNreproducciones(), c.getDisco());
 		// TODO Auto-generated constructor stub
@@ -48,7 +57,7 @@ public class CancionDAOMariaDB extends Cancion implements ICancionDAO{
 		if (id != -1) {
 			actualizar();
 		} else {
-			con = Conexion.getConexion();
+			Connection con = Conexion.getConexion();
 			if (con != null) {
 				PreparedStatement ps=null;
 				ResultSet rs=null;
@@ -83,10 +92,10 @@ public class CancionDAOMariaDB extends Cancion implements ICancionDAO{
 		}
 		
 	}
-
+	
 	@Override
 	public void actualizar() {
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			try {
@@ -115,7 +124,7 @@ public class CancionDAOMariaDB extends Cancion implements ICancionDAO{
 
 	@Override
 	public void borrar() {
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			try {
@@ -140,7 +149,7 @@ public class CancionDAOMariaDB extends Cancion implements ICancionDAO{
 	@Override
 	public List<Cancion> mostrarPorNombre(String nombre) {
 		List<Cancion> resultado=new ArrayList<Cancion>();
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
@@ -177,11 +186,11 @@ public class CancionDAOMariaDB extends Cancion implements ICancionDAO{
 		return resultado;
 	}
 
-	@Override
-	public List<Cancion> buscarTodasCancion() {
+	
+	public static List<Cancion> buscarTodasCancion() {
 		List<Cancion> resultado=new ArrayList<Cancion>();
 		
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;

@@ -8,6 +8,5 @@ import javafx.collections.ObservableList;
 
 public interface IGeneroDAO extends IDAO<Genero>{
 	List<Genero> mostrarPorNombre(String nombre);
-	List<Genero> buscarTodosGenero() ;
 	void addCancion(Cancion c);
 }

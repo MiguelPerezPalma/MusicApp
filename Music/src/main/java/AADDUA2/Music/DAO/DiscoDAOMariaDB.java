@@ -26,7 +26,6 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 	private static final String MOSTRARTODOS = "SELECT Id,Nombre,FechaPublicacion,Foto,NReproducciones,Id_Artista FROM disco";
 	private static final String MOSTRARPORID = "SELECT Id,Nombre,FechaPublicacion,Foto,NReproducciones,Id_Artista FROM disco WHERE Id=?";
 	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,FechaPublicacion,Foto,NReproducciones,Id_Artista FROM disco WHERE Nombre=?";
-	Connection con=null;
 	
 	public DiscoDAOMariaDB() {
 		super();
@@ -40,6 +39,13 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+	public DiscoDAOMariaDB(String nombre, java.sql.Date fechaPublicacion, String foto, int nReproducciones,
+			Artista artista) {
+		super(nombre, fechaPublicacion, foto, nReproducciones, artista);
+		// TODO Auto-generated constructor stub
+	}
+
 
 	public DiscoDAOMariaDB(int id, String nombre, java.sql.Date fechaPublicacion, String foto, int nReproducciones,
 			Artista artista, List<Cancion> canciones) {
@@ -58,7 +64,7 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 		if (id != -1) {
 			actualizar();
 		} else {
-			con = Conexion.getConexion();
+			Connection con = Conexion.getConexion();
 			if (con != null) {
 				PreparedStatement ps=null;
 				ResultSet rs=null;
@@ -95,7 +101,7 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 
 	@Override
 	public void actualizar() {
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			try {
@@ -124,7 +130,7 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 
 	@Override
 	public void borrar() {
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			try {
@@ -149,7 +155,7 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 	@Override
 	public List<Disco> mostrarPorNombre(String nombre) {
 		List<Disco> resultado=new ArrayList<Disco>();
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
@@ -199,11 +205,11 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 	}
 
 
-	@Override
-	public List<Disco> buscarTodosDisco() {
+	
+	public  static List<Disco> buscarTodosDisco() {
 		List<Disco> resultado=new ArrayList<Disco>();
 		
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
@@ -240,7 +246,7 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 	public Disco mostrar(int id) {
 		Disco resultado=new Disco();
 		
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;

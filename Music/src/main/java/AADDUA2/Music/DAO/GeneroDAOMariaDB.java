@@ -25,7 +25,7 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 	private static final String MOSTRARPORID = "SELECT ID,Nombre FROM genero WHERE ID=?";
 	private static final String MOSTRARPORNOMBRE = "SELECT ID,Nombre FROM genero WHERE Nombre=?";
 
-	private Connection con = null;
+	
 	public GeneroDAOMariaDB() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -44,13 +44,23 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 		super(g.getId(), g.getNombre(),g.getCanciones());
 		// TODO Auto-generated constructor stub
 	}
+	
+	public GeneroDAOMariaDB(int id) {
+		super(id);
+		// TODO Auto-generated constructor stub
+	}
+
+	public GeneroDAOMariaDB(String nombre) {
+		super(nombre);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public void guardar() {
 		if (id != -1) {
 			actualizar();
 		} else {
-			con = Conexion.getConexion();
+			Connection con = Conexion.getConexion();
 			if (con != null) {
 				PreparedStatement ps=null;
 				ResultSet rs=null;
@@ -84,7 +94,7 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 
 	@Override
 	public void actualizar() {
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			try {
@@ -109,7 +119,7 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 
 	@Override
 	public void borrar() {
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			try {
@@ -134,7 +144,7 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 	@Override
 	public List<Genero> mostrarPorNombre(String nombre) {
 		List<Genero> resultado=new ArrayList<Genero>();
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
@@ -166,10 +176,9 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 		return resultado;
 	}
 
-	@Override
-	public List<Genero> buscarTodosGenero() {
+	public static List<Genero> buscarTodosGenero() {
 		List<Genero> resultado=new ArrayList<Genero>();
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
@@ -199,7 +208,7 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 	public Genero mostrar(int id) {
 		Genero resultado=new GeneroDAOMariaDB();
 		
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;

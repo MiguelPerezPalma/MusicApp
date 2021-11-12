@@ -23,6 +23,11 @@ public class Disco {
 		this.artista = artista;
 	}
 	
+	public Disco(int id) {
+		super();
+		this.id = id;
+	}
+
 	public Disco(int id, String nombre, java.sql.Date fechaPublicacion, String foto, int nReproducciones,
 			Artista artista, List<Cancion> canciones) {
 		super();
@@ -37,6 +42,15 @@ public class Disco {
 	
 	public List<Cancion> getCanciones() {
 		return canciones;
+	}
+
+	public Disco(String nombre, java.sql.Date fechaPublicacion, String foto, int nReproducciones, Artista artista) {
+		super();
+		this.nombre = nombre;
+		this.fechaPublicacion = fechaPublicacion;
+		this.foto = foto;
+		this.nReproducciones = nReproducciones;
+		this.artista = artista;
 	}
 
 	public void setCanciones(List<Cancion> canciones) {

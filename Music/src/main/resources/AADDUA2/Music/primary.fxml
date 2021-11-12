@@ -9,7 +9,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar layoutY="2.0" AnchorPane.bottomAnchor="374.4" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -35,11 +34,12 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Button layoutX="191.0" layoutY="296.0" mnemonicParsing="false" text="Button" />
+                  <Button layoutX="173.0" layoutY="273.0" mnemonicParsing="false" text="Iniciar Sesion" />
                   <TextField layoutX="142.0" layoutY="160.0" />
                   <TextField layoutX="143.0" layoutY="224.0" />
                   <Label layoutX="83.0" layoutY="163.0" prefHeight="18.0" prefWidth="46.0" text="Usuario:" />
                   <Label layoutX="62.0" layoutY="227.0" prefHeight="18.0" prefWidth="66.0" text="Contraseña: " />
+                  <Button layoutX="182.0" layoutY="317.0" mnemonicParsing="false" text="Registrate" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="373.0" prefWidth="169.0">

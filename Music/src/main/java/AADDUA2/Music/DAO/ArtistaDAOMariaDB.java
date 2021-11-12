@@ -25,7 +25,6 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 	private static final String MOSTRARTODOS = "SELECT Id,Nombre,Nacionalidad,Foto FROM artista";
 	private static final String MOSTRARPORID = "SELECT Id,Nombre,Nacionalidad,Foto FROM artista WHERE Id=?";
 	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Nacionalidad,Foto FROM artista WHERE Nombre=?";
-	private Connection con = null;
 	
 	
 	public ArtistaDAOMariaDB() {
@@ -50,14 +49,25 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 		super(a.getId(), a.getNombre(), a.getNacionalidad(), a.getFoto(),a.getDiscos());
 		
 	}
+
+	public ArtistaDAOMariaDB(String nombre, String nacionalidad, String foto) {
+		super(nombre, nacionalidad, foto);
+		// TODO Auto-generated constructor stub
+	}
+
 	
+	public ArtistaDAOMariaDB(int id) {
+		super(id);
+		// TODO Auto-generated constructor stub
+	}
+
 
 	@Override
 	public void guardar() {
 		if (id != -1) {
 			actualizar();
 		} else {
-			con = Conexion.getConexion();
+			Connection con = Conexion.getConexion();
 			if (con != null) {
 				PreparedStatement ps=null;
 				ResultSet rs=null;
@@ -94,7 +104,7 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 
 	@Override
 	public void actualizar() {
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			try {
@@ -121,7 +131,7 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 
 	@Override
 	public void borrar() {
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			try {
@@ -144,9 +154,9 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 	}
 
 	@Override
-	public List<Artista> mostrarPorNombre(String nombre) {
+	public  List<Artista> mostrarPorNombre(String nombre) {
 		List<Artista> resultado=new ArrayList<Artista>();
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
@@ -198,10 +208,10 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 	}
 
 
-	@Override
-	public List<Artista> buscarTodosArtistas() {
+	
+	public static  List<Artista> buscarTodosArtistas() {
 		List<Artista> resultado=new ArrayList<Artista>();
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
@@ -232,7 +242,7 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 	}
 	public Artista mostrar(int id) {
 		Artista resultado=new ArtistaDAOMariaDB();
-		
+		Connection con = Conexion.getConexion();
 		con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;

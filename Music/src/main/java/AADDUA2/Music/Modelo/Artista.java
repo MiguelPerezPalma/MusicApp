@@ -26,6 +26,18 @@ public class Artista {
 		this.nacionalidad = nacionalidad;
 		this.foto = foto;
 	}
+	
+	public Artista(String nombre, String nacionalidad, String foto) {
+		super();
+		this.nombre = nombre;
+		this.nacionalidad = nacionalidad;
+		this.foto = foto;
+	}
+	
+	public Artista(int id) {
+		super();
+		this.id = id;
+	}
 
 	public Artista() {
 		super();

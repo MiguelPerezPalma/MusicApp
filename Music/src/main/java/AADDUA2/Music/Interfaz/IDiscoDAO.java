@@ -9,6 +9,5 @@ import javafx.collections.ObservableList;
 public interface IDiscoDAO extends IDAO<Disco>{
 	List<Disco> mostrarPorNombre(String nombre);
 	void addCancion(Cancion c);
-	List<Disco> buscarTodosDisco() ;
 	
 }

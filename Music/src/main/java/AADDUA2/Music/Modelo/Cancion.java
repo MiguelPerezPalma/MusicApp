@@ -10,6 +10,12 @@ public class Cancion {
 	protected int nreproducciones;
 	protected Disco disco;
 	
+	public Cancion(int id) {
+		super();
+		this.id = id;
+	}
+
+
 	public Cancion(int id, String nombre, float duracion, Genero genero, int nreproducciones, Disco disco) {
 		super();
 		this.id = id;
@@ -20,6 +26,16 @@ public class Cancion {
 		this.disco = disco;
 	}
 	
+
+	public Cancion(String nombre, float duracion, Genero genero, int nreproducciones, Disco disco) {
+		super();
+		this.nombre = nombre;
+		this.duracion = duracion;
+		this.genero = genero;
+		this.nreproducciones = nreproducciones;
+		this.disco = disco;
+	}
+
 
 	public Cancion() {
 		super();

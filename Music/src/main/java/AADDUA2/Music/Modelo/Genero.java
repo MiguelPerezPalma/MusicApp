@@ -13,6 +13,16 @@ public class Genero {
 		this.canciones = canciones;
 	}
 	
+	public Genero(int id) {
+		super();
+		this.id = id;
+	}
+
+	public Genero(String nombre) {
+		super();
+		this.nombre = nombre;
+	}
+
 	public Genero() {
 		super();
 	}

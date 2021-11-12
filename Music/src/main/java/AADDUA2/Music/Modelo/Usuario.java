@@ -7,21 +7,36 @@ public class Usuario {
 	protected String nombre;
 	protected String correo;
 	protected String foto;
+	protected String contraseña;
 	protected List<ListaReproduccion>listasDeRepro;
-	public Usuario(String nombre, String correo, String foto, List<ListaReproduccion> listasDeRepro) {
+	
+
+	public Usuario(String nombre, String correo, String foto, String contraseña) {
 		super();
 		this.nombre = nombre;
 		this.correo = correo;
 		this.foto = foto;
-		this.listasDeRepro = listasDeRepro;
+		this.contraseña = contraseña;
 	}
-	
-	public Usuario(int id, String nombre, String correo, String foto) {
+
+	public Usuario(int id, String nombre, String correo, String foto, String contraseña) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.correo = correo;
 		this.foto = foto;
+		this.contraseña = contraseña;
+	}
+
+	public Usuario(int id, String nombre, String correo, String foto, String contraseña,
+			List<ListaReproduccion> listasDeRepro) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.correo = correo;
+		this.foto = foto;
+		this.contraseña = contraseña;
+		this.listasDeRepro = listasDeRepro;
 	}
 
 	public Usuario() {
@@ -57,6 +72,14 @@ public class Usuario {
 	}
 	public void setListasDeRepro(List<ListaReproduccion> listasDeRepro) {
 		this.listasDeRepro = listasDeRepro;
+	}
+
+	public String getContraseña() {
+		return contraseña;
+	}
+
+	public void setContraseña(String contraseña) {
+		this.contraseña = contraseña;
 	}
 	
 	

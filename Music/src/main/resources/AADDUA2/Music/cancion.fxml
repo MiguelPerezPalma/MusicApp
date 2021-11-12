@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="408.0" prefWidth="278.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField layoutX="65.0" layoutY="70.0" />
+      <TextField layoutX="65.0" layoutY="144.0" />
+      <Label layoutX="117.0" layoutY="43.0" text="Nombre" />
+      <Label layoutX="115.0" layoutY="112.0" text="Duracion" />
+      <ComboBox layoutX="64.0" layoutY="210.0" prefWidth="150.0" />
+      <ComboBox layoutX="63.0" layoutY="274.0" prefWidth="150.0" />
+      <Label layoutX="119.0" layoutY="179.0" text="Genero" />
+      <Label layoutX="124.0" layoutY="245.0" text="Disco" />
+      <Button layoutX="108.0" layoutY="342.0" mnemonicParsing="false" text="Finalizar" />
+   </children>
+</AnchorPane>

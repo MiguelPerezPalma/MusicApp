@@ -25,9 +25,6 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 	private static final String MOSTRARPORID = "SELECT Id,Nombre,Descripcion,Id_Creador FROM listareproduccion  WHERE Id=?";
 	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Descripcion,Id_Creador FROM listareproduccion  WHERE Id=?";
 	
-	private Connection con = null;
-	
-	
 
 	public LReproduccionDAOMariaDB(int id, String nombre, String descripccion, Usuario creador,
 			List<Usuario> subscriptores, List<Cancion> canciones) {
@@ -55,7 +52,7 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 		if (id != -1) {
 			actualizar();
 		} else {
-			con = Conexion.getConexion();
+			Connection con = Conexion.getConexion();
 			if (con != null) {
 				PreparedStatement ps=null;
 				ResultSet rs=null;
@@ -91,7 +88,7 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 
 	@Override
 	public void actualizar() {
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			try {
@@ -118,7 +115,7 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 
 	@Override
 	public void borrar() {
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			try {
@@ -143,7 +140,7 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 	@Override
 	public List<ListaReproduccion> mostrarPorNombre(String nombre) {
 		List<ListaReproduccion> resultado=new ArrayList<ListaReproduccion>();
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
@@ -177,7 +174,7 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 	public ListaReproduccion mostrar(int id) {
 		ListaReproduccion resultado=new ListaReproduccion();
 		
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
@@ -214,7 +211,7 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 	public List<ListaReproduccion> buscarTodosLreproduccion() {
 		List<ListaReproduccion> resultado=new ArrayList<ListaReproduccion>();
 		
-		con = Conexion.getConexion();
+		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;

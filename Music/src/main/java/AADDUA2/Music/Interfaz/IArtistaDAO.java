@@ -8,7 +8,7 @@ import javafx.collections.ObservableList;
 
 public interface IArtistaDAO extends IDAO<Artista>{
 	List<Artista> mostrarPorNombre(String nombre);
-	List<Artista> buscarTodosArtistas() ;
 	void addDisco(Disco d);
 	List<Disco> getDiscos();
+	
 }
