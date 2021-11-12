@@ -10,6 +10,7 @@ import java.util.List;
 
 import AADDUA2.Music.Interfaz.ILReproduccionDAO;
 import AADDUA2.Music.Modelo.Cancion;
+import AADDUA2.Music.Modelo.Disco;
 import AADDUA2.Music.Modelo.Genero;
 import AADDUA2.Music.Modelo.ListaReproduccion;
 import AADDUA2.Music.Modelo.Usuario;
@@ -24,8 +25,9 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 	private static final String MOSTRARTODOS = "SELECT Id,Nombre,Descripcion,Id_Creador FROM listareproduccion";
 	private static final String MOSTRARPORID = "SELECT Id,Nombre,Descripcion,Id_Creador FROM listareproduccion  WHERE Id=?";
 	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Descripcion,Id_Creador FROM listareproduccion  WHERE Id=?";
-	
-
+	private static final String INSERTCANCION = "INSERT INTO cancion_lreproduccion (Id_Cancion,Id_LReproduccion) VALUES (?,?)";
+	private static final String MOSTRARCANCIONES = "SELECT cancion.Nombre FROM cancion,cancion_lreproduccion WHERE cancion.Id = cancion_lreproduccion.Id_Cancion AND cancion.Id = ?";
+	private static final String MOSTRARUSUARIOS = "SELECT usuario.Nombre FROM usuario,lreproduccion_usuario WHERE usuario.Id = lreproduccion_usuario.Id_Usuario AND usuario.Id = ?";
 	public LReproduccionDAOMariaDB(int id, String nombre, String descripccion, Usuario creador,
 			List<Usuario> subscriptores, List<Cancion> canciones) {
 		super(id, nombre, descripccion, creador, subscriptores, canciones);
@@ -222,13 +224,104 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 				while(rs.next()) {
 					
 					UsuarioDAOMariaDB x=new UsuarioDAOMariaDB();
-					Usuario xs=x.mostrar(rs.getInt("id_sede"));
+					Usuario xs=x.mostrar(rs.getInt("Id_Creador"));
 					
 					resultado.add(new ListaReproduccion(rs.getInt("Id"),
 							rs.getString("Nombre"),
 							rs.getString("Descripcion"),
 									xs));
 				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
+	}
+	
+	public void addCancion(Cancion ca,ListaReproduccion ls ) {
+			Connection con = Conexion.getConexion();
+			if (con != null) {
+				PreparedStatement ps=null;
+				ResultSet rs=null;
+				try {
+					ps = con.prepareStatement(INSERTCANCION, Statement.RETURN_GENERATED_KEYS);
+					ps.setInt(1, ca.getId());
+					ps.setInt(2, ls.getId());
+					ps.executeUpdate();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					try {
+						ps.close();
+						rs.close();
+					}catch (SQLException e) {
+						// TODO: handle exception
+					}
+				}
+			}
+	}
+	public List<CancionDAOMariaDB> buscarCanciones() {
+		List<CancionDAOMariaDB> resultado=new ArrayList<CancionDAOMariaDB>();
+		Connection con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARCANCIONES);
+				ps.setInt(1, this.id);
+				rs=ps.executeQuery();
+				GeneroDAOMariaDB x=new GeneroDAOMariaDB();
+				Genero xs=x.mostrar(rs.getInt("Id_Genero"));
+				
+				DiscoDAOMariaDB dx=new DiscoDAOMariaDB();
+				Disco xd=dx.mostrar(rs.getInt("Id_Disco"));
+				
+				resultado.add(new CancionDAOMariaDB(rs.getInt("Id"),
+						rs.getString("Nombre"),
+						rs.getFloat("Duracion"),
+						xs,
+						rs.getInt("NReproducciones"),
+						xd));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
+	}
+	public List<UsuarioDAOMariaDB> buscarUsuarios() {
+		List<UsuarioDAOMariaDB> resultado=new ArrayList<UsuarioDAOMariaDB>();
+		Connection con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARCANCIONES);
+				ps.setInt(1, this.id);
+				rs=ps.executeQuery();
+				
+				resultado.add(new UsuarioDAOMariaDB(
+						rs.getInt("Id"),
+						rs.getString("Nombre"),
+						rs.getString("Correo"),
+						rs.getString("Foto"),
+						rs.getString("Contraseña")));
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

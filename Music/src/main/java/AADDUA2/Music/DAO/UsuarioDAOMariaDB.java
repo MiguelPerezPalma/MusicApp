@@ -22,7 +22,9 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 	private static final String MOSTRARTODOS = "SELECT Id,Nombre,Correo,Foto,Contraseña FROM usuario";
 	private static final String MOSTRARPORID = "SELECT Id,Nombre,Correo,Foto,Contraseña FROM usuario WHERE Id=?";
 	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Correo,Foto,Contraseña FROM usuario  WHERE Nombre=?";
-	
+	private static final String INSERTLISTAREPRODUCCION = "INSERT INTO lreproduccion_usuario (Id_Usuario, Id_LReproduccion) VALUES (?,?)";
+	private static final String BORRARLISTAREPRODUCCION = "DELETE FROM lreproduccion_usuario WHERE Id=?";
+	private static final String MOSTRARLISTAREPRODUCCION = "SELECT listareproduccion.Nombre FROM listareproduccion,lreproduccion_usuario WHERE listareproduccion.Id = lreproduccion_usuario.Id_LReproduccion AND listareproduccion.Id = ?";
 	public UsuarioDAOMariaDB() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -273,5 +275,63 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 		}
 		return resultado;
 	}
-
+	
+	public void addListaReproduccion(Usuario u, ListaReproduccion ls) {
+		Connection con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			try {
+				ps = con.prepareStatement(INSERTLISTAREPRODUCCION);
+				ps.setInt(1,u.getId());
+				ps.setInt(2, ls.getId());
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		
+	}
+	
+	public List<LReproduccionDAOMariaDB> buscarListasRep() {
+		List<LReproduccionDAOMariaDB> resultado=new ArrayList<LReproduccionDAOMariaDB>();
+		
+		Connection con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARTODOS);
+				ps.setInt(1, this.id);
+				rs=ps.executeQuery();
+				while(rs.next()) {
+					
+					UsuarioDAOMariaDB x=new UsuarioDAOMariaDB();
+					Usuario xs=x.mostrar(rs.getInt("Id_Creador"));
+					
+					resultado.add(new LReproduccionDAOMariaDB(rs.getInt("Id"),
+							rs.getString("Nombre"),
+							rs.getString("Descripcion"),
+									xs));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
+	}
 }
