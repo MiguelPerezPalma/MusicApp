@@ -70,12 +70,9 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 					ps.setInt(1, this.id);
 					ps.setString(2, this.nombre);
 					ps.executeUpdate();
-					// Solo lo puedes ejecutar si has puesto RETURN_GENERATED_KEYS
+					
 					rs = ps.getGeneratedKeys();
-					if (rs.next()) {
-						this.id = rs.getInt(1);
-					}
-					// fin de extraer el id generado automaticamente en la db
+					
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -78,12 +78,9 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 					ps.setInt(5, this.nReproducciones);
 					ps.setInt(6, this.artista.getId());
 					ps.executeUpdate();
-					// Solo lo puedes ejecutar si has puesto RETURN_GENERATED_KEYS
+					
 					rs = ps.getGeneratedKeys();
-					if (rs.next()) {
-						this.id = rs.getInt(1);
-					}
-					// fin de extraer el id generado automaticamente en la db
+					
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

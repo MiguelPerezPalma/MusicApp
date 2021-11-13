@@ -59,9 +59,6 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 
 	@Override
 	public void guardar() {
-		if (id != -1) {
-			actualizar();
-		} else {
 			Connection con = Conexion.getConexion();
 			if (con != null) {
 				PreparedStatement ps=null;
@@ -75,12 +72,7 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 					ps.setString(4, this.foto);
 					ps.setString(5, this.contraseña);
 					ps.executeUpdate();
-					// Solo lo puedes ejecutar si has puesto RETURN_GENERATED_KEYS
 					rs = ps.getGeneratedKeys();
-					if (rs.next()) {
-						this.id = rs.getInt(1);
-					}
-					// fin de extraer el id generado automaticamente en la db
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -92,8 +84,8 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 						// TODO: handle exception
 					}
 				}
+		
 			}
-		}
 		
 	}
 
@@ -242,8 +234,8 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 		}
 		return resultado;
 	}
-	@Override
-	public List<Usuario> buscarTodosUsuarios() {
+	
+	public static List<Usuario> buscarTodosUsuarios() {
 		List<Usuario> resultado=new ArrayList<Usuario>();
 		
 		Connection con = Conexion.getConexion();

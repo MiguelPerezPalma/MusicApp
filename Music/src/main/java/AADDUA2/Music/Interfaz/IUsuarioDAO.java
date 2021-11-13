@@ -9,5 +9,5 @@ public interface IUsuarioDAO extends IDAO<Usuario>{
 	List<Usuario> mostrarPorNombre(String nombre);
 	void addLReproduccion(ListaReproduccion l);
 	void removeLReproduccion(ListaReproduccion l);
-	List<Usuario> buscarTodosUsuarios() ;
+	
 }
