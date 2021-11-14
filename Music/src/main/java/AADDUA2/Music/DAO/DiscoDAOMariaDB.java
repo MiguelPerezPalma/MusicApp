@@ -61,39 +61,37 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 
 	@Override
 	public void guardar() {
-		if (id != -1) {
-			actualizar();
-		} else {
-			Connection con = Conexion.getConexion();
-			if (con != null) {
-				PreparedStatement ps=null;
-				ResultSet rs=null;
-				try {
-					ps = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
+		
+		Connection con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
 
-					ps.setInt(1, this.id);
-					ps.setString(2, this.nombre);
-					ps.setDate(3, this.fechaPublicacion);
-					ps.setString(4, this.foto);
-					ps.setInt(5, this.nReproducciones);
-					ps.setInt(6, this.artista.getId());
-					ps.executeUpdate();
-					
-					rs = ps.getGeneratedKeys();
-					
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} finally {
-					try {
-						ps.close();
-						rs.close();
-					}catch (SQLException e) {
-						// TODO: handle exception
-					}
+				ps.setInt(1, this.id);
+				ps.setString(2, this.nombre);
+				ps.setDate(3, this.fechaPublicacion);
+				ps.setString(4, this.foto);
+				ps.setInt(5, this.nReproducciones);
+				ps.setInt(6, this.artista.getId());
+				ps.executeUpdate();
+				
+				rs = ps.getGeneratedKeys();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
 				}
 			}
 		}
+		
 	}
 
 	@Override
@@ -253,7 +251,7 @@ public class DiscoDAOMariaDB extends Disco implements IDiscoDAO{
 				rs=ps.executeQuery();
 				if(rs.next()) {
 					ArtistaDAOMariaDB x=new ArtistaDAOMariaDB();
-					Artista xs=x.mostrar(rs.getInt("id_sede"));
+					Artista xs=x.mostrar(rs.getInt("Id_Artista"));
 					
 					resultado=new Disco(rs.getInt("Id"),
 							rs.getString("Nombre"),

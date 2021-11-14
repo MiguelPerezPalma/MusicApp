@@ -54,39 +54,37 @@ public class CancionDAOMariaDB extends Cancion implements ICancionDAO{
 
 	@Override
 	public void guardar() {
-		if (id != -1) {
-			actualizar();
-		} else {
-			Connection con = Conexion.getConexion();
-			if (con != null) {
-				PreparedStatement ps=null;
-				ResultSet rs=null;
-				try {
-					ps = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
+		
+		Connection con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
 
-					ps.setInt(1, this.id);
-					ps.setString(2, this.nombre);
-					ps.setFloat(3, this.duracion);
-					ps.setInt(4, this.nreproducciones);
-					ps.setInt(5,this.genero.getId());
-					ps.setInt(6,this.disco.getId());
-					ps.executeUpdate();
-					
-					rs = ps.getGeneratedKeys();
-					
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} finally {
-					try {
-						ps.close();
-						rs.close();
-					}catch (SQLException e) {
-						// TODO: handle exception
-					}
+				ps.setInt(1, this.id);
+				ps.setString(2, this.nombre);
+				ps.setFloat(3, this.duracion);
+				ps.setInt(4, this.nreproducciones);
+				ps.setInt(5,this.genero.getId());
+				ps.setInt(6,this.disco.getId());
+				ps.executeUpdate();
+				
+				rs = ps.getGeneratedKeys();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
 				}
 			}
 		}
+		
 		
 	}
 	

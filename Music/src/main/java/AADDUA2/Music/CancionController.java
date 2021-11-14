@@ -17,9 +17,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class CancionController {
+	@FXML
 	private TextField Nombretx;
+	@FXML
 	private TextField Duraciontx;
+	@FXML
 	private ComboBox<Genero> Generocb;
+	@FXML
 	private ComboBox<Disco> Discocb;
 	
 	public void initialize() {
@@ -38,6 +42,6 @@ public class CancionController {
 			Cancion c=new Cancion(nombre, duracion, gen, nReproducciones, dis);
 			CancionDAOMariaDB cd=new CancionDAOMariaDB(c);
 			cd.guardar();
-		App.setRoot("secondary");
+		App.setRoot("administrar");
 	}
 }

@@ -11,17 +11,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class GeneroController {
+	@FXML
 	private TextField Nombretx;
+	@FXML
 	private Button fin;
 	@FXML
-	private void guardarUsuario() throws IOException {
+	private void guardarGenero() throws IOException {
 		if(Nombretx.getText().isBlank()) {
 		}else {
 			String nombre=Nombretx.getText();
 			Genero g=new Genero(nombre);
 			GeneroDAOMariaDB ard=new GeneroDAOMariaDB(g);
 			ard.guardar();
-			App.setRoot("primary");
+			App.setRoot("administrar");
 		}
 	}
 }

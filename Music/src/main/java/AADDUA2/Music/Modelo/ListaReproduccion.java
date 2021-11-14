@@ -28,7 +28,7 @@ public class ListaReproduccion {
 		Descripccion = descripccion;
 		this.creador = creador;
 	}
-
+	
 	public ListaReproduccion() {
 		super();
 	}
@@ -62,6 +62,14 @@ public class ListaReproduccion {
 	}
 	public void setSubscriptores(List<Usuario> subscriptores) {
 		this.subscriptores = subscriptores;
+	}
+
+	public List<Cancion> getCanciones() {
+		return canciones;
+	}
+
+	public void setCanciones(List<Cancion> canciones) {
+		this.canciones = canciones;
 	}
 	
 }

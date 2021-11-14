@@ -22,17 +22,27 @@ public class PrimaryController {
     }
     @FXML
     private void switchToadministrar() throws IOException{
-    	if(ContraAdmintx.getText().equals("admin")) {
-    		App.setRoot("usuario");
+    	if(!ContraAdmintx.getText().isBlank()) {
+	    	String ad=ContraAdmintx.getText();
+	    	if(ad.equals("admin")) {
+	    		App.setRoot("administrar");
+	    	}
     	}
     }
     @FXML
     private void iniciasesion() throws IOException{
     	for(Usuario u:users) {
-	    	if(Nombtx.getText().equals(u.getNombre())&&Contratx.getText().equals(u.getContraseña())) {
-	    		App.setRoot("administrar");
+    		String nom=Nombtx.getText();
+    		String con=Contratx.getText();
+	    	if(nom.equals(u.getNombre())&&con.equals(u.getContraseña())) {
+	    		App.setRoot("reproduccion");
 	    	}
     	}
+    	
+    }
+    @FXML
+    public void closeApp() {
+    	System.exit(0);
     }
     	
 }

@@ -57,9 +57,7 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 
 	@Override
 	public void guardar() {
-		if (id != -1) {
-			actualizar();
-		} else {
+		
 			Connection con = Conexion.getConexion();
 			if (con != null) {
 				PreparedStatement ps=null;
@@ -85,7 +83,7 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 					}
 				}
 			}
-		}
+		
 		
 	}
 
@@ -150,8 +148,7 @@ public class GeneroDAOMariaDB extends Genero implements IGeneroDAO{
 				ps.setString(1, nombre);
 				rs=ps.executeQuery();
 				while(rs.next()) {
-					UsuarioDAOMariaDB x=new UsuarioDAOMariaDB();
-					Usuario xs=x.mostrar(rs.getInt("id_sede"));
+					
 					
 					resultado.add(new GeneroDAOMariaDB(
 							rs.getInt("Id"),

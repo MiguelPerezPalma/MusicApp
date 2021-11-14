@@ -51,37 +51,35 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 
 	@Override
 	public void guardar() {
-		if (id != -1) {
-			actualizar();
-		} else {
-			Connection con = Conexion.getConexion();
-			if (con != null) {
-				PreparedStatement ps=null;
-				ResultSet rs=null;
-				try {
-					ps = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
+		
+		Connection con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
 
-					ps.setInt(1, this.id);
-					ps.setString(2, this.nombre);
-					ps.setString(3, this.Descripccion);
-					ps.setInt(4, this.creador.getId());
-					ps.executeUpdate();
-					
-					rs = ps.getGeneratedKeys();
-					
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} finally {
-					try {
-						ps.close();
-						rs.close();
-					}catch (SQLException e) {
-						// TODO: handle exception
-					}
+				ps.setInt(1, this.id);
+				ps.setString(2, this.nombre);
+				ps.setString(3, this.Descripccion);
+				ps.setInt(4, this.creador.getId());
+				ps.executeUpdate();
+				
+				rs = ps.getGeneratedKeys();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
 				}
 			}
 		}
+		
 		
 	}
 

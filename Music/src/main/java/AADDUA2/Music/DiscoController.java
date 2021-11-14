@@ -15,9 +15,13 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
 public class DiscoController {
+	@FXML
 	private TextField Nombretx;
+	@FXML
 	private TextField URLtx;
+	@FXML
 	private ComboBox<Artista> Artistascb;
+	@FXML
 	private DatePicker datedp;
 	@FXML
 	public void initialize() {
@@ -37,7 +41,7 @@ public class DiscoController {
 			Disco d=new Disco(nombre, fecha, Url, nReproducciones, art);
 			DiscoDAOMariaDB dd=new DiscoDAOMariaDB(d);
 			dd.guardar();
-		App.setRoot("secondary");
+		App.setRoot("administrar");
 		}
 	}
 }

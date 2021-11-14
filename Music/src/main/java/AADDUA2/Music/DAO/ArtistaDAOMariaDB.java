@@ -64,35 +64,30 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 
 	@Override
 	public void guardar() {
-		if (id != -1) {
-			actualizar();
-		} else {
-			Connection con = Conexion.getConexion();
-			if (con != null) {
-				PreparedStatement ps=null;
-				ResultSet rs=null;
-				try {
-					ps = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
+		Connection con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
 
-					ps.setInt(1, this.id);
-					ps.setString(2, this.nombre);
-					ps.setString(3, this.nacionalidad);
-					ps.setString(4, this.foto);
-					
-					ps.executeUpdate();
-					// Solo lo puedes ejecutar si has puesto RETURN_GENERATED_KEYS
-					rs = ps.getGeneratedKeys();
-					
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} finally {
-					try {
-						ps.close();
-						rs.close();
-					}catch (SQLException e) {
-						// TODO: handle exception
-					}
+				ps.setInt(1, this.id);
+				ps.setString(2, this.nombre);
+				ps.setString(3, this.nacionalidad);
+				ps.setString(4, this.foto);
+				
+				ps.executeUpdate();
+				rs = ps.getGeneratedKeys();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
 				}
 			}
 		}
@@ -162,8 +157,7 @@ public class ArtistaDAOMariaDB extends Artista implements IArtistaDAO{
 				ps.setString(1, nombre);
 				rs=ps.executeQuery();
 				if(rs.next()) {
-					ArtistaDAOMariaDB x=new ArtistaDAOMariaDB();
-					Artista xs=x.mostrar(rs.getInt("id_sede"));
+					
 					
 					while(rs.next()) {
 						resultado.add(new ArtistaDAOMariaDB(

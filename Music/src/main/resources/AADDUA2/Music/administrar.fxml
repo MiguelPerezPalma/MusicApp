@@ -9,23 +9,14 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="734.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="734.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AADDUA2.Music.AdministrarController">
    <children>
       <MenuBar layoutY="2.0" AnchorPane.bottomAnchor="438.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="Archivo">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+                  <MenuItem mnemonicParsing="false" onAction="#switchToPrimary" text="Volver a Inicio" />
+              <MenuItem mnemonicParsing="false" onAction="#closeApp" text="Cerrar" />
             </items>
           </Menu>
         </menus>
@@ -34,37 +25,37 @@
         <items>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ComboBox layoutX="15.0" layoutY="121.0" prefWidth="150.0" />
-                  <Button layoutX="64.0" layoutY="194.0" mnemonicParsing="false" text="Añadir" />
-                  <Button layoutX="64.0" layoutY="268.0" mnemonicParsing="false" text="Borrar" />
+                  <ComboBox fx:id="Artistascb" layoutX="15.0" layoutY="121.0" prefWidth="150.0" />
+                  <Button layoutX="64.0" layoutY="194.0" mnemonicParsing="false" onAction="#addArtista" text="Añadir" />
+                  <Button layoutX="64.0" layoutY="268.0" mnemonicParsing="false" onAction="#borraArtista" text="Borrar" />
                   <Label layoutX="64.0" layoutY="52.0" text="ARTISTAS" />
                   <Button layoutX="65.0" layoutY="341.0" mnemonicParsing="false" text="Editar" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="419.0" prefWidth="184.0">
                <children>
-                  <ComboBox layoutX="20.0" layoutY="122.0" prefWidth="150.0" />
-                  <Button layoutX="69.0" layoutY="194.0" mnemonicParsing="false" text="Añadir" />
-                  <Button layoutX="68.0" layoutY="268.0" mnemonicParsing="false" text="Borrar" />
+                  <ComboBox fx:id="Discocb" layoutX="20.0" layoutY="122.0" prefWidth="150.0" />
+                  <Button layoutX="69.0" layoutY="194.0" mnemonicParsing="false" onAction="#addDisco" text="Añadir" />
+                  <Button layoutX="68.0" layoutY="268.0" mnemonicParsing="false" onAction="#borraDisco" text="Borrar" />
                   <Button layoutX="69.0" layoutY="341.0" mnemonicParsing="false" text="Editar" />
                   <Label layoutX="73.0" layoutY="52.0" text="DISCOS" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="372.0" prefWidth="273.0">
                <children>
-                  <ComboBox layoutX="14.0" layoutY="124.0" prefWidth="150.0" />
-                  <Button layoutX="63.0" layoutY="194.0" mnemonicParsing="false" text="Añadir" />
-                  <Button layoutX="63.0" layoutY="268.0" mnemonicParsing="false" text="Borrar" />
+                  <ComboBox fx:id="Cancioncb" layoutX="14.0" layoutY="124.0" prefWidth="150.0" />
+                  <Button layoutX="63.0" layoutY="194.0" mnemonicParsing="false" onAction="#addCancion" text="Añadir" />
+                  <Button layoutX="63.0" layoutY="268.0" mnemonicParsing="false" onAction="#borraCancion" text="Borrar" />
                   <Button layoutX="63.0" layoutY="341.0" mnemonicParsing="false" text="Editar" />
                   <Label layoutX="56.0" layoutY="52.0" text="CANCIONES" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ComboBox layoutX="10.0" layoutY="122.0" prefWidth="150.0" />
-                  <Button layoutX="59.0" layoutY="268.0" mnemonicParsing="false" text="Añadir" />
-                  <Button layoutX="59.0" layoutY="194.0" mnemonicParsing="false" text="Borrar" />
-                  <Button layoutX="59.0" layoutY="341.0" mnemonicParsing="false" text="Editar" />
+                  <ComboBox fx:id="Generocb" layoutX="10.0" layoutY="122.0" prefWidth="150.0" />
+                  <Button layoutX="57.0" layoutY="194.0" mnemonicParsing="false" onAction="#addGenero" text="Añadir" />
+                  <Button layoutX="61.0" layoutY="265.0" mnemonicParsing="false" onAction="#borraGenero" text="Borrar" />
+                  <Button layoutX="59.0" layoutY="339.0" mnemonicParsing="false" text="Editar" />
                   <Label layoutX="62.0" layoutY="52.0" text="GENERO" />
                </children>
             </AnchorPane>

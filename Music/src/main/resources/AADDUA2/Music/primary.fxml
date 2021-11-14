@@ -13,19 +13,9 @@
    <children>
       <MenuBar layoutY="2.0" AnchorPane.bottomAnchor="374.4" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="Archivo">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#closeApp" text="Cerrar" />
             </items>
           </Menu>
         </menus>
@@ -34,18 +24,18 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
+                  <TextField fx:id="Nombtx" layoutX="142.0" layoutY="160.0" />
+                  <TextField fx:id="Contratx" layoutX="143.0" layoutY="224.0" />
                   <Button layoutX="173.0" layoutY="273.0" mnemonicParsing="false" onAction="#iniciasesion" text="Iniciar Sesion" />
-                  <TextField layoutX="142.0" layoutY="160.0" />
-                  <TextField layoutX="143.0" layoutY="224.0" />
+                  <Button layoutX="182.0" layoutY="317.0" mnemonicParsing="false" onAction="#switchToRegistrar" text="Registrate" />
                   <Label layoutX="83.0" layoutY="163.0" prefHeight="18.0" prefWidth="46.0" text="Usuario:" />
                   <Label layoutX="62.0" layoutY="227.0" prefHeight="18.0" prefWidth="66.0" text="Contraseña: " />
-                  <Button layoutX="182.0" layoutY="317.0" mnemonicParsing="false" onAction="#switchToRegistrar" text="Registrate" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="373.0" prefWidth="169.0">
                <children>
+                  <TextField fx:id="ContraAdmintx" layoutX="6.0" layoutY="284.0" />
                   <Button layoutX="41.0" layoutY="325.0" mnemonicParsing="false" onAction="#switchToadministrar" text="Administrar" />
-                  <TextField layoutX="6.0" layoutY="284.0" />
                </children>
             </AnchorPane>
         </items>

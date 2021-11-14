@@ -11,10 +11,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class ArtistaController {
+	@FXML
 	private TextField Nombretx;
+	@FXML
 	private TextField Nacionalidadtx;
+	@FXML
 	private TextField Fototx;
-	private Button fin;
 	
 	@FXML
 	private void guardarUsuario() throws IOException {
@@ -27,7 +29,7 @@ public class ArtistaController {
 			Artista a=new Artista(nombre,nacionalidad,foto);
 			ArtistaDAOMariaDB ard=new ArtistaDAOMariaDB(a);
 			ard.guardar();
-			App.setRoot("primary");
+			App.setRoot("administrar");
 		}
 	}
 }

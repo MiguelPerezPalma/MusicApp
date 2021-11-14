@@ -15,9 +15,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 
 public class AdministrarController {
+	@FXML
 	private ComboBox<Artista> Artistascb;
+	@FXML
 	private ComboBox<Disco> Discocb;
+	@FXML
 	private ComboBox<Cancion> Cancioncb;
+	@FXML
 	private ComboBox<Genero> Generocb;
 	List<Artista> artistas=ArtistaDAOMariaDB.buscarTodosArtistas();
 	List<Disco> discos=DiscoDAOMariaDB.buscarTodosDisco();
@@ -29,10 +33,18 @@ public class AdministrarController {
     }
     @FXML
     public void initialize() {
-		Artistascb.getItems().addAll(ArtistaDAOMariaDB.buscarTodosArtistas());
-		Discocb.getItems().addAll(DiscoDAOMariaDB.buscarTodosDisco());
-		Cancioncb.getItems().addAll(CancionDAOMariaDB.buscarTodasCancion());
+    	if(artistas!=null) {
+    		Artistascb.getItems().addAll(ArtistaDAOMariaDB.buscarTodosArtistas());
+    	}
+    	if(discos!=null) {
+    		Discocb.getItems().addAll(DiscoDAOMariaDB.buscarTodosDisco());
+    	}
+		if(canciones!=null) {
+			Cancioncb.getItems().addAll(CancionDAOMariaDB.buscarTodasCancion());
+		}
+		if(generos!=null) {
 		Generocb.getItems().addAll(GeneroDAOMariaDB.buscarTodosGenero());
+    	}
 	}
     public void addArtista() throws IOException{
     	App.setRoot("artista");
@@ -82,5 +94,9 @@ public class AdministrarController {
     		adao.borrar();
     		generos.remove(adao);
     	}
+    }
+    @FXML
+    public void closeApp() {
+    	System.exit(0);
     }
 }
