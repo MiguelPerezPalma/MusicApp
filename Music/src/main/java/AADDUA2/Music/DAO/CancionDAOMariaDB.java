@@ -20,8 +20,8 @@ import javafx.collections.ObservableList;
 
 public class CancionDAOMariaDB extends Cancion implements ICancionDAO{
 	private static final String INSERT = "INSERT INTO cancion (Id,Nombre,Duracion,NReproducciones,Id_Genero,Id_Disco) VALUES (?,?,?,?,?,?)";
-	private static final String EDITAR = "UPDATE cancion SET Nombre=?,Duracion=?,NReproducciones=?,Id_Genero=?,Id_Disco=? WHERE ID=?";
-	private static final String BORRAR = "DELETE FROM artista WHERE ID=?";
+	private static final String EDITAR = "UPDATE cancion SET Nombre=?,Duracion=?,NReproducciones=?,Id_Genero=?,Id_Disco=? WHERE Id=?";
+	private static final String BORRAR = "DELETE FROM cancion WHERE Id=?";
 	private static final String MOSTRARTODOS = "SELECT Id,Nombre,Duracion,NReproducciones,Id_Genero,Id_Disco FROM cancion";
 	private static final String MOSTRARPORID = "SELECT Id,Nombre,Duracion,NReproducciones,Id_Genero,Id_Disco FROM cancion  WHERE Id=?";
 	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Duracion,NReproducciones,Id_Genero,Id_Disco FROM cancion  WHERE Nombre=?";

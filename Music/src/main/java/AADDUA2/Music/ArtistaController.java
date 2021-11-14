@@ -32,4 +32,8 @@ public class ArtistaController {
 			App.setRoot("administrar");
 		}
 	}
+	@FXML
+    private void switchToAdmin() throws IOException {
+        App.setRoot("administrar");
+    }
 }

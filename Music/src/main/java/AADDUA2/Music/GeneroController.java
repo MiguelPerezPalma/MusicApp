@@ -26,4 +26,8 @@ public class GeneroController {
 			App.setRoot("administrar");
 		}
 	}
+	@FXML
+    private void switchToAdmin() throws IOException {
+        App.setRoot("administrar");
+    }
 }

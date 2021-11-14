@@ -290,7 +290,28 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 		}
 		
 	}
-	
+	public void borrarCancion() {
+		Connection con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			try {
+				ps = con.prepareStatement(BORRARLISTAREPRODUCCION);
+				ps.setInt(1, this.id);
+				ps.executeUpdate();
+				this.id=-1;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		
+	}
 	public List<LReproduccionDAOMariaDB> buscarListasRep() {
 		List<LReproduccionDAOMariaDB> resultado=new ArrayList<LReproduccionDAOMariaDB>();
 		

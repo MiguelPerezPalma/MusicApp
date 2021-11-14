@@ -3,6 +3,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
@@ -17,5 +20,14 @@
       <Label layoutX="119.0" layoutY="179.0" text="Genero" />
       <Label layoutX="124.0" layoutY="245.0" text="Disco" />
       <Button layoutX="108.0" layoutY="342.0" mnemonicParsing="false" onAction="#guardarCancion" text="Finalizar" />
+      <MenuBar layoutX="-1.0" layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Archivo">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#switchToAdmin" text="Cancelar Creacion" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
    </children>
 </AnchorPane>

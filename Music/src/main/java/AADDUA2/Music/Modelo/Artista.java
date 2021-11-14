@@ -72,6 +72,11 @@ public class Artista {
 	public void setDiscos(List<Disco> discos) {
 		this.discos = discos;
 	}
+
+	@Override
+	public String toString() {
+		return nombre;
+	}
 	
 	
 }

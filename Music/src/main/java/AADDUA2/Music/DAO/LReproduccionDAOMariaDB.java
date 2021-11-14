@@ -26,6 +26,7 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 	private static final String MOSTRARPORID = "SELECT Id,Nombre,Descripcion,Id_Creador FROM listareproduccion  WHERE Id=?";
 	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Descripcion,Id_Creador FROM listareproduccion  WHERE Id=?";
 	private static final String INSERTCANCION = "INSERT INTO cancion_lreproduccion (Id_Cancion,Id_LReproduccion) VALUES (?,?)";
+	private static final String BORRARCANCION= "DELETE FROM lreproduccion_usuario WHERE Id=?";
 	private static final String MOSTRARCANCIONES = "SELECT cancion.Nombre FROM cancion,cancion_lreproduccion WHERE cancion.Id = cancion_lreproduccion.Id_Cancion AND cancion.Id = ?";
 	private static final String MOSTRARUSUARIOS = "SELECT usuario.Nombre FROM usuario,lreproduccion_usuario WHERE usuario.Id = lreproduccion_usuario.Id_Usuario AND usuario.Id = ?";
 	public LReproduccionDAOMariaDB(int id, String nombre, String descripccion, Usuario creador,
@@ -263,6 +264,29 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 					}
 				}
 			}
+	}
+	
+	public void borrarCancion() {
+		Connection con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			try {
+				ps = con.prepareStatement(BORRARCANCION);
+				ps.setInt(1, this.id);
+				ps.executeUpdate();
+				this.id=-1;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		
 	}
 	public List<CancionDAOMariaDB> buscarCanciones() {
 		List<CancionDAOMariaDB> resultado=new ArrayList<CancionDAOMariaDB>();

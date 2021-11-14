@@ -38,6 +38,9 @@ public class UsuarioController {
 			App.setRoot("primary");
 		}
 	}
-	
+	@FXML
+    private void switchToAdmin() throws IOException {
+        App.setRoot("primary");
+    }
 	
 }

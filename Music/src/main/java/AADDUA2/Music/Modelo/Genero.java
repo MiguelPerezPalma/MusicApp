@@ -50,6 +50,9 @@ public class Genero {
 	public void setCanciones(List<Cancion> canciones) {
 		this.canciones = canciones;
 	}
-	
+	@Override
+	public String toString() {
+		return nombre;
+	}
 	
 }
