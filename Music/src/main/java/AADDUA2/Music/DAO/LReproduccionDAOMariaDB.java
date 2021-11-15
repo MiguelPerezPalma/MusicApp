@@ -29,6 +29,7 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 	private static final String BORRARCANCION= "DELETE FROM lreproduccion_usuario WHERE Id=?";
 	private static final String MOSTRARCANCIONES = "SELECT cancion.Nombre FROM cancion,cancion_lreproduccion WHERE cancion.Id = cancion_lreproduccion.Id_Cancion AND cancion.Id = ?";
 	private static final String MOSTRARUSUARIOS = "SELECT usuario.Nombre FROM usuario,lreproduccion_usuario WHERE usuario.Id = lreproduccion_usuario.Id_Usuario AND usuario.Id = ?";
+	
 	public LReproduccionDAOMariaDB(int id, String nombre, String descripccion, Usuario creador,
 			List<Usuario> subscriptores, List<Cancion> canciones) {
 		super(id, nombre, descripccion, creador, subscriptores, canciones);
@@ -48,8 +49,11 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-
+	
+	public LReproduccionDAOMariaDB(String nombre, String descripccion, Usuario creador) {
+		super(nombre, descripccion, creador);
+		// TODO Auto-generated constructor stub
+	}
 	@Override
 	public void guardar() {
 		
@@ -205,8 +209,8 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 	}
 
 
-	@Override
-	public List<ListaReproduccion> buscarTodosLreproduccion() {
+	
+	public static List<ListaReproduccion> buscarTodosLreproduccion() {
 		List<ListaReproduccion> resultado=new ArrayList<ListaReproduccion>();
 		
 		Connection con = Conexion.getConexion();
@@ -288,15 +292,15 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 		}
 		
 	}
-	public List<CancionDAOMariaDB> buscarCanciones() {
-		List<CancionDAOMariaDB> resultado=new ArrayList<CancionDAOMariaDB>();
+	public static List<Cancion> buscarCanciones(ListaReproduccion lista) {
+		List<Cancion> resultado=new ArrayList<>();
 		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
 			try {
 				ps = con.prepareStatement(MOSTRARCANCIONES);
-				ps.setInt(1, this.id);
+				ps.setInt(1, lista.getId());
 				rs=ps.executeQuery();
 				GeneroDAOMariaDB x=new GeneroDAOMariaDB();
 				Genero xs=x.mostrar(rs.getInt("Id_Genero"));
@@ -324,15 +328,15 @@ public class LReproduccionDAOMariaDB extends ListaReproduccion implements ILRepr
 		}
 		return resultado;
 	}
-	public List<UsuarioDAOMariaDB> buscarUsuarios() {
-		List<UsuarioDAOMariaDB> resultado=new ArrayList<UsuarioDAOMariaDB>();
+	public static List<Usuario> buscarUsuarios(ListaReproduccion lista) {
+		List<Usuario> resultado=new ArrayList<>();
 		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
 			try {
 				ps = con.prepareStatement(MOSTRARCANCIONES);
-				ps.setInt(1, this.id);
+				ps.setInt(1, lista.getId());
 				rs=ps.executeQuery();
 				
 				resultado.add(new UsuarioDAOMariaDB(

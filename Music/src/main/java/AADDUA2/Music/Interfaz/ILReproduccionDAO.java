@@ -6,5 +6,5 @@ import javafx.collections.ObservableList;
 
 public interface ILReproduccionDAO extends IDAO<ListaReproduccion>{
 	List<ListaReproduccion> mostrarPorNombre(String nombre);
-	List<ListaReproduccion> buscarTodosLreproduccion() ;
+	
 }

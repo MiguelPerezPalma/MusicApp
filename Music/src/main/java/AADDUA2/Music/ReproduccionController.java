@@ -1,60 +1,137 @@
 package AADDUA2.Music;
 
+import java.io.IOException;
+import java.util.List;
+
+import AADDUA2.Music.DAO.CancionDAOMariaDB;
+import AADDUA2.Music.DAO.LReproduccionDAOMariaDB;
 import AADDUA2.Music.Modelo.Cancion;
 import AADDUA2.Music.Modelo.ListaReproduccion;
 import AADDUA2.Music.Modelo.Usuario;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ReproduccionController {
+	@FXML
 	private TableView<Cancion> cancionTable;
+	@FXML
 	private TableColumn<Cancion, String> columCancNombre;
-	private TableColumn<Cancion, Double> columCancDuracion;
+	@FXML
+	private TableColumn<Cancion, String> columCancDuracion;
+	@FXML
 	private TableColumn<Cancion, String> columCancGenero;
-	private TableColumn<Cancion, Integer> columCancRepro;
+	@FXML
+	private TableColumn<Cancion, String> columCancRepro;
+	@FXML
 	private TableColumn<Cancion, String> columCancDisco;
+	@FXML
 	private TableView<ListaReproduccion> listaTable;
+	@FXML
 	private TableColumn<ListaReproduccion, String> columLrNombre;
+	@FXML
 	private TableColumn<ListaReproduccion, String> columLrDescripcion;
+	@FXML
 	private TableColumn<ListaReproduccion, String> columLrCreador;
-	private TableView<ListaReproduccion> SubsTable;
-	private TableColumn<ListaReproduccion, String> columSbNombre;
-	private TableView<ListaReproduccion> DiscTable;
-	private TableColumn<ListaReproduccion, String> columDisNombre;
-	
+	@FXML
+	private TableView<Usuario> SubsTable;
+	@FXML
+	private TableColumn<Usuario, String> columSbNombre;
+	@FXML
+	private TableView<Cancion> LCancTable;
+	@FXML
+	private TableColumn<Cancion, String> columLcancNombre;
+	@FXML
+	private ComboBox<ListaReproduccion> ListaCB;
+	private List<ListaReproduccion>listas=LReproduccionDAOMariaDB.buscarTodosLreproduccion();
+	private static Usuario creador=new Usuario();
 	@FXML
 	public void initialize() {
 		
+		ListaCB.getItems().addAll(LReproduccionDAOMariaDB.buscarTodosLreproduccion());
 		
+		configuraTablas();
+		
+		List<Cancion> canciones = CancionDAOMariaDB.buscarTodasCancion();
+		List<ListaReproduccion> listas=LReproduccionDAOMariaDB.buscarTodosLreproduccion();
+		cancionTable.setItems(FXCollections.observableList(canciones));
+		listaTable.setItems(FXCollections.observableList(listas));
+		listaTable.getSelectionModel().selectedItemProperty().addListener((Observable,oldValue,newValue)->{
+			tablaUsuario(newValue);
+			tablaCancion(newValue);	
+    	});
 	}
 	public void configuraTablas() {
 		columCancNombre.setCellValueFactory(cadenaCacNombre->
     		new SimpleStringProperty(cadenaCacNombre.getValue().getNombre()));
 		
-		columCancDuracion.setCellValueFactory(new PropertyValueFactory<Cancion, Double>("Duracion"));
+		columCancDuracion.setCellValueFactory(cadenaCancDuracion->
+		new SimpleStringProperty(cadenaCancDuracion.getValue().getDuracion()+""));
 		
 		columCancGenero.setCellValueFactory(cadenaCacGnero->
 		new SimpleStringProperty(cadenaCacGnero.getValue().getGenero().getNombre()));
 		
-		columCancRepro.setCellValueFactory(new PropertyValueFactory<Cancion, Integer>("NReproducciones"));
+		columCancRepro.setCellValueFactory(cadenaCancRepro->
+		new SimpleStringProperty(cadenaCancRepro.getValue().getNreproducciones()+""));
 		
-		columCancDisco.setCellValueFactory(cadenaCacGnero->
-		new SimpleStringProperty(cadenaCacGnero.getValue().getDisco().getNombre()));
+		columCancDisco.setCellValueFactory(cadenaCancDisco->
+		new SimpleStringProperty(cadenaCancDisco.getValue().getDisco().getNombre()));
 		
 		columLrNombre.setCellValueFactory(cadenaLrNombre->
 		new SimpleStringProperty(cadenaLrNombre.getValue().getNombre()));
 		
-		columLrDescripcion.setCellValueFactory(cadenaLrNombre->
-		new SimpleStringProperty(cadenaLrNombre.getValue().getDescripccion()));
+		columLrDescripcion.setCellValueFactory(cadenaLrDescripcion->
+		new SimpleStringProperty(cadenaLrDescripcion.getValue().getDescripccion()));
 		
-		columLrCreador.setCellValueFactory(cadenaLrNombre->
-		new SimpleStringProperty(cadenaLrNombre.getValue().getCreador().getNombre()));
+		columLrCreador.setCellValueFactory(cadenaLrCreador->
+		new SimpleStringProperty(cadenaLrCreador.getValue().getCreador().getNombre()));
+		
+		columSbNombre.setCellValueFactory(cadenaSbNombre->
+		new SimpleStringProperty(cadenaSbNombre.getValue().getNombre()));
+		
+		columLcancNombre.setCellValueFactory(cadenaLcancNombre->
+		new SimpleStringProperty(cadenaLcancNombre.getValue().getNombre()));
 		
 		
 	}
-	
-	
+	private void tablaUsuario(ListaReproduccion l) {
+		List<Usuario> subcriptores=LReproduccionDAOMariaDB.buscarUsuarios(l);
+		SubsTable.setItems(FXCollections.observableList(subcriptores));
+		SubsTable.refresh();
+	}
+	private void tablaCancion(ListaReproduccion l) {
+		List<Cancion> canciones=LReproduccionDAOMariaDB.buscarCanciones(l);
+		LCancTable.setItems(FXCollections.observableList(canciones));
+		LCancTable.refresh();
+	}
+	@FXML
+    private void switchToInicio() throws IOException {
+        App.setRoot("primary");
+    }
+	@FXML
+	public void borraLista() throws IOException{
+    	int id=ListaCB.getSelectionModel().getSelectedItem().getId();
+    	Usuario cre=ListaCB.getSelectionModel().getSelectedItem().getCreador();
+    	System.out.println(creador);
+    	System.out.println(cre);
+    	if(id>=-1&&cre.equals(creador)) {
+    		ListaReproduccion a=new ListaReproduccion(id);
+    		LReproduccionDAOMariaDB adao=new LReproduccionDAOMariaDB(a);
+    		adao.borrar();
+    		listas.remove(adao);
+    		ListaCB.getItems().clear();
+    		ListaCB.getItems().addAll(LReproduccionDAOMariaDB.buscarTodosLreproduccion());
+    	}
+    }
+	@FXML
+    private void switchToCrearLista() throws IOException {
+        App.setRoot("Lrepro");
+    }
+	public static void setCreador(Usuario u) {
+		creador=u;
+	}
 }

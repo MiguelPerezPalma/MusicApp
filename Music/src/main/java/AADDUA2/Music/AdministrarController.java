@@ -34,16 +34,16 @@ public class AdministrarController {
     @FXML
     public void initialize() {
     	if(artistas!=null) {
-    		Artistascb.getItems().addAll(ArtistaDAOMariaDB.buscarTodosArtistas());
+    		Artistascb.getItems().addAll(artistas);
     	}
     	if(discos!=null) {
-    		Discocb.getItems().addAll(DiscoDAOMariaDB.buscarTodosDisco());
+    		Discocb.getItems().addAll(discos);
     	}
 		if(canciones!=null) {
-			Cancioncb.getItems().addAll(CancionDAOMariaDB.buscarTodasCancion());
+			Cancioncb.getItems().addAll(canciones);
 		}
 		if(generos!=null) {
-		Generocb.getItems().addAll(GeneroDAOMariaDB.buscarTodosGenero());
+		Generocb.getItems().addAll(generos);
     	}
 	}
     public void addArtista() throws IOException{
@@ -66,6 +66,9 @@ public class AdministrarController {
     		ArtistaDAOMariaDB adao=new ArtistaDAOMariaDB(a);
     		adao.borrar();
     		artistas.remove(adao);
+    		Artistascb.getItems().clear();
+    		Artistascb.getItems().addAll(ArtistaDAOMariaDB.buscarTodosArtistas());
+    		
     	}
     }
     public void borraCancion() throws IOException{
@@ -75,6 +78,8 @@ public class AdministrarController {
     		CancionDAOMariaDB adao=new CancionDAOMariaDB(a);
     		adao.borrar();
     		canciones.remove(adao);
+    		Cancioncb.getItems().clear();
+    		Cancioncb.getItems().setAll(CancionDAOMariaDB.buscarTodasCancion());
     	}
     }
     public void borraDisco() throws IOException{
@@ -84,6 +89,8 @@ public class AdministrarController {
     		DiscoDAOMariaDB adao=new DiscoDAOMariaDB(a);
     		adao.borrar();
     		discos.remove(adao);
+    		Discocb.getItems().clear();
+    		Discocb.getItems().addAll(DiscoDAOMariaDB.buscarTodosDisco());
     	}
     }
     public void borraGenero() throws IOException{
@@ -93,7 +100,11 @@ public class AdministrarController {
     		GeneroDAOMariaDB adao=new GeneroDAOMariaDB(a);
     		adao.borrar();
     		generos.remove(adao);
+    		Generocb.getItems().clear();
+    		Generocb.getItems().addAll(GeneroDAOMariaDB.buscarTodosGenero());
+    		
     	}
+    	
     }
     @FXML
     public void closeApp() {

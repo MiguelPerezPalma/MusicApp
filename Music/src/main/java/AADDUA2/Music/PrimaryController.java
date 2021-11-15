@@ -35,6 +35,8 @@ public class PrimaryController {
     		String nom=Nombtx.getText();
     		String con=Contratx.getText();
 	    	if(nom.equals(u.getNombre())&&con.equals(u.getContraseña())) {
+	    		Lreprocontroller.setCreador(u);
+	    		ReproduccionController.setCreador(u);
 	    		App.setRoot("reproduccion");
 	    	}
     	}
