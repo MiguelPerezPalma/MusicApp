@@ -9,25 +9,25 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="393.0" prefWidth="249.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="393.0" prefWidth="249.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AADDUA2.Music.EditListaController">
    <children>
       <MenuBar layoutX="7.0" layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <menus>
             <Menu mnemonicParsing="false" text="Archivo">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Cancelar Creacion" />
+                  <MenuItem mnemonicParsing="false" onAction="#switchToRepro" text="Cancelar Edicion" />
                </items>
             </Menu>
          </menus>
       </MenuBar>
-      <TextField layoutX="51.0" layoutY="69.0" />
-      <TextField layoutX="50.0" layoutY="142.0" />
+      <TextField fx:id="Nombretx" layoutX="51.0" layoutY="69.0" />
+      <TextField fx:id="Descripciontx" layoutX="50.0" layoutY="142.0" />
       <Label layoutX="103.0" layoutY="43.0" text="Nombre" />
       <Label layoutX="92.0" layoutY="108.0" text="Descripccion" />
-      <Button layoutX="95.0" layoutY="343.0" mnemonicParsing="false" text="Finalizar" />
-      <ComboBox layoutX="50.0" layoutY="184.0" prefWidth="150.0" promptText="Canciones" />
-      <Button layoutX="76.0" layoutY="219.0" mnemonicParsing="false" text="Añadir Cancion" />
-      <ComboBox layoutX="50.0" layoutY="259.0" prefWidth="150.0" promptText="Tus Canciones" />
-      <Button layoutX="77.0" layoutY="293.0" mnemonicParsing="false" text="Borrar Cancion" />
+      <Button layoutX="95.0" layoutY="343.0" mnemonicParsing="false" onAction="#termina" text="Finalizar" />
+      <ComboBox fx:id="CancionCB" layoutX="50.0" layoutY="184.0" prefWidth="150.0" promptText="Canciones" />
+      <Button layoutX="76.0" layoutY="219.0" mnemonicParsing="false" onAction="#AñadirCancion" text="Añadir Cancion" />
+      <ComboBox fx:id="MisCancionCB" layoutX="50.0" layoutY="259.0" prefWidth="150.0" promptText="Tus Canciones" />
+      <Button layoutX="77.0" layoutY="293.0" mnemonicParsing="false" onAction="#quitarCancion" text="Borrar Cancion" />
    </children>
 </AnchorPane>

@@ -27,10 +27,13 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Button layoutX="41.0" layoutY="167.0" mnemonicParsing="false" onAction="#switchToCrearLista" text="Añadir Playlist" />
-                  <Button layoutX="45.0" layoutY="118.0" mnemonicParsing="false" text="Edita Playlist" />
-                  <Button layoutX="42.0" layoutY="214.0" mnemonicParsing="false" onAction="#borraLista" text="Borrar Playlist" />
+                  <Button layoutX="39.0" layoutY="134.0" mnemonicParsing="false" onAction="#switchToCrearLista" text="Añadir Playlist" />
+                  <Button layoutX="44.0" layoutY="174.0" mnemonicParsing="false" onAction="#switchToEditLista" text="Edita Playlist" />
+                  <Button layoutX="41.0" layoutY="214.0" mnemonicParsing="false" onAction="#borraLista" text="Borrar Playlist" />
                   <ComboBox fx:id="ListaCB" layoutX="12.0" layoutY="261.0" prefWidth="150.0" promptText="Listas" />
+                  <Button layoutX="48.0" layoutY="307.0" mnemonicParsing="false" onAction="#subscribe" text="Suscribirse" />
+                  <Button layoutX="44.0" layoutY="381.0" mnemonicParsing="false" onAction="#desuscribe" text="Desuscribirse" />
+                  <ComboBox fx:id="SubscritasCB" layoutX="10.0" layoutY="348.0" prefWidth="150.0" promptText="Subscritas" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

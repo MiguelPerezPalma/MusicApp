@@ -5,6 +5,7 @@ import java.util.List;
 
 import AADDUA2.Music.DAO.CancionDAOMariaDB;
 import AADDUA2.Music.DAO.LReproduccionDAOMariaDB;
+import AADDUA2.Music.DAO.UsuarioDAOMariaDB;
 import AADDUA2.Music.Modelo.Cancion;
 import AADDUA2.Music.Modelo.ListaReproduccion;
 import AADDUA2.Music.Modelo.Usuario;
@@ -47,7 +48,10 @@ public class ReproduccionController {
 	private TableColumn<Cancion, String> columLcancNombre;
 	@FXML
 	private ComboBox<ListaReproduccion> ListaCB;
+	@FXML
+	private ComboBox<ListaReproduccion> SubscritasCB;
 	private List<ListaReproduccion>listas=LReproduccionDAOMariaDB.buscarTodosLreproduccion();
+	private List<ListaReproduccion>mislistas=UsuarioDAOMariaDB.buscarListasRep(creador);
 	private static Usuario creador=new Usuario();
 	@FXML
 	public void initialize() {
@@ -64,6 +68,7 @@ public class ReproduccionController {
 			tablaUsuario(newValue);
 			tablaCancion(newValue);	
     	});
+		SubscritasCB.getItems().addAll(mislistas);
 	}
 	public void configuraTablas() {
 		columCancNombre.setCellValueFactory(cadenaCacNombre->
@@ -116,9 +121,7 @@ public class ReproduccionController {
 	public void borraLista() throws IOException{
     	int id=ListaCB.getSelectionModel().getSelectedItem().getId();
     	Usuario cre=ListaCB.getSelectionModel().getSelectedItem().getCreador();
-    	System.out.println(creador);
-    	System.out.println(cre);
-    	if(id>=-1&&cre.equals(creador)) {
+    	if(id>=-1&&cre.getId()==creador.getId()) {
     		ListaReproduccion a=new ListaReproduccion(id);
     		LReproduccionDAOMariaDB adao=new LReproduccionDAOMariaDB(a);
     		adao.borrar();
@@ -127,6 +130,28 @@ public class ReproduccionController {
     		ListaCB.getItems().addAll(LReproduccionDAOMariaDB.buscarTodosLreproduccion());
     	}
     }
+	
+	@FXML
+	public void subscribe() throws IOException{
+    	ListaReproduccion lsr=ListaCB.getSelectionModel().getSelectedItem();
+    	UsuarioDAOMariaDB udao=new UsuarioDAOMariaDB();
+    	udao.addListaReproduccion(creador, lsr);
+    	columSbNombre.setCellValueFactory(cadenaSbNombre->
+		new SimpleStringProperty(cadenaSbNombre.getValue().getNombre()));
+    	mislistas.add(lsr);
+    	SubscritasCB.getItems().clear();
+    	SubscritasCB.getItems().addAll(mislistas);
+    }
+	
+	@FXML
+	public void desuscribe() throws IOException{
+		ListaReproduccion lsr=SubscritasCB.getSelectionModel().getSelectedItem();
+    	UsuarioDAOMariaDB udao=new UsuarioDAOMariaDB();
+    	udao.borrarCancion();
+    	mislistas.remove(lsr);
+    	SubscritasCB.getItems().clear();
+    	SubscritasCB.getItems().addAll(mislistas);
+    }
 	@FXML
     private void switchToCrearLista() throws IOException {
         App.setRoot("Lrepro");
@@ -134,4 +159,17 @@ public class ReproduccionController {
 	public static void setCreador(Usuario u) {
 		creador=u;
 	}
+	
+	@FXML
+    private void switchToEditLista() throws IOException {
+		int id=ListaCB.getSelectionModel().getSelectedItem().getId();
+		Usuario cre=ListaCB.getSelectionModel().getSelectedItem().getCreador();
+		
+		if(id>=-1&&cre.getId()==creador.getId()) {
+			EditListaController.setCreador(cre);
+			EditListaController.setMiLista(ListaCB.getSelectionModel().getSelectedItem());
+			App.setRoot("editLista");
+    	}
+        
+    }
 }

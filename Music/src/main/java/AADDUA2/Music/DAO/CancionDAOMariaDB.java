@@ -13,7 +13,6 @@ import AADDUA2.Music.Modelo.Cancion;
 import AADDUA2.Music.Modelo.Disco;
 import AADDUA2.Music.Modelo.Genero;
 import AADDUA2.Music.Modelo.ListaReproduccion;
-import AADDUA2.Music.Modelo.Usuario;
 import AADDUA2.Music.Utils.Conexion;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -181,6 +180,45 @@ public class CancionDAOMariaDB extends Cancion implements ICancionDAO{
 		return resultado;
 	}
 
+	public Cancion mostrar(int id) {
+		Cancion resultado=new Cancion();
+		
+		Connection con = Conexion.getConexion();
+		if (con != null) {
+			PreparedStatement ps=null;
+			ResultSet rs=null;
+			try {
+				ps = con.prepareStatement(MOSTRARPORID);
+				ps.setInt(1,id);
+				rs=ps.executeQuery();
+				while (rs.next()) {
+					GeneroDAOMariaDB x=new GeneroDAOMariaDB();
+					Genero xs=x.mostrar(rs.getInt("Id_Genero"));
+					
+					DiscoDAOMariaDB dx=new DiscoDAOMariaDB();
+					Disco xd=dx.mostrar(rs.getInt("Id_Disco"));
+					resultado=new Cancion(rs.getInt("Id"),
+							rs.getString("Nombre"),
+							rs.getFloat("Duracion"),
+							xs,
+							rs.getInt("NReproducciones"),
+							xd);
+				
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					rs.close();
+				}catch (SQLException e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return resultado;
+	}
 	
 	public static List<Cancion> buscarTodasCancion() {
 		List<Cancion> resultado=new ArrayList<Cancion>();

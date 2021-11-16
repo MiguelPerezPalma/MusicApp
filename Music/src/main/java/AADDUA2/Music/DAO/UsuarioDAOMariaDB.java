@@ -24,7 +24,7 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Correo,Foto,Contraseña FROM usuario  WHERE Nombre=?";
 	private static final String INSERTLISTAREPRODUCCION = "INSERT INTO lreproduccion_usuario (Id_Usuario, Id_LReproduccion) VALUES (?,?)";
 	private static final String BORRARLISTAREPRODUCCION = "DELETE FROM lreproduccion_usuario WHERE Id=?";
-	private static final String MOSTRARLISTAREPRODUCCION = "SELECT listareproduccion.Nombre FROM listareproduccion,lreproduccion_usuario WHERE listareproduccion.Id = lreproduccion_usuario.Id_LReproduccion AND listareproduccion.Id = ?";
+	private static final String MOSTRARLISTAREPRODUCCION = "SELECT Id_LReproduccion From lreproduccion_usuario WHERE Id_Usuario=?";
 	public UsuarioDAOMariaDB() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -203,7 +203,7 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 		
 	}
 	public Usuario mostrar(int id) {
-		Usuario resultado=new UsuarioDAOMariaDB();
+		Usuario resultado=new Usuario();
 		
 		Connection con = Conexion.getConexion();
 		if (con != null) {
@@ -213,8 +213,8 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 				ps = con.prepareStatement(MOSTRARPORID);
 				ps.setInt(1,id);
 				rs=ps.executeQuery();
-				if(rs.next()) {
-					resultado=new UsuarioDAOMariaDB(rs.getInt("Id"),
+				while(rs.next()) {
+					resultado=new Usuario(rs.getInt("Id"),
 							rs.getString("Nombre"),
 							rs.getString("Correo"),
 							rs.getString("Foto"),
@@ -312,39 +312,26 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 		}
 		
 	}
-	public List<LReproduccionDAOMariaDB> buscarListasRep() {
-		List<LReproduccionDAOMariaDB> resultado=new ArrayList<LReproduccionDAOMariaDB>();
+	public static List<ListaReproduccion> buscarListasRep(Usuario u) {
+		List<ListaReproduccion> resultado=new ArrayList<ListaReproduccion>();
 		
 		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			ResultSet rs=null;
 			try {
-				ps = con.prepareStatement(MOSTRARTODOS);
-				ps.setInt(1, this.id);
+				ps = con.prepareStatement(MOSTRARLISTAREPRODUCCION);
+				ps.setInt(1, u.getId());
 				rs=ps.executeQuery();
 				while(rs.next()) {
-					
-					UsuarioDAOMariaDB x=new UsuarioDAOMariaDB();
-					Usuario xs=x.mostrar(rs.getInt("Id_Creador"));
-					
-					resultado.add(new LReproduccionDAOMariaDB(rs.getInt("Id"),
-							rs.getString("Nombre"),
-							rs.getString("Descripcion"),
-									xs));
+					resultado.add(new LReproduccionDAOMariaDB().mostrar(rs.getInt("Id_LReproduccion")));
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} finally {
-				try {
-					ps.close();
-					rs.close();
-				}catch (SQLException e) {
-					// TODO: handle exception
-				}
 			}
 		}
 		return resultado;
 	}
+	
 }
