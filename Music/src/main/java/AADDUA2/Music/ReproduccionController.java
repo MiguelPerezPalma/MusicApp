@@ -147,7 +147,7 @@ public class ReproduccionController {
 	public void desuscribe() throws IOException{
 		ListaReproduccion lsr=SubscritasCB.getSelectionModel().getSelectedItem();
     	UsuarioDAOMariaDB udao=new UsuarioDAOMariaDB();
-    	udao.borrarCancion();
+    	udao.borrarCancion(creador);
     	mislistas.remove(lsr);
     	SubscritasCB.getItems().clear();
     	SubscritasCB.getItems().addAll(mislistas);

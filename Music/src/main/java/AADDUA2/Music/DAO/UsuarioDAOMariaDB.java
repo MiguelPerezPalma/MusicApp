@@ -23,7 +23,7 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 	private static final String MOSTRARPORID = "SELECT Id,Nombre,Correo,Foto,Contraseña FROM usuario WHERE Id=?";
 	private static final String MOSTRARPORNOMBRE = "SELECT Id,Nombre,Correo,Foto,Contraseña FROM usuario  WHERE Nombre=?";
 	private static final String INSERTLISTAREPRODUCCION = "INSERT INTO lreproduccion_usuario (Id_Usuario, Id_LReproduccion) VALUES (?,?)";
-	private static final String BORRARLISTAREPRODUCCION = "DELETE FROM lreproduccion_usuario WHERE Id=?";
+	private static final String BORRARLISTAREPRODUCCION = "DELETE FROM lreproduccion_usuario WHERE Id_Usuario=?";
 	private static final String MOSTRARLISTAREPRODUCCION = "SELECT Id_LReproduccion From lreproduccion_usuario WHERE Id_Usuario=?";
 	public UsuarioDAOMariaDB() {
 		super();
@@ -290,13 +290,13 @@ public class UsuarioDAOMariaDB extends Usuario implements IUsuarioDAO{
 		}
 		
 	}
-	public void borrarCancion() {
+	public void borrarCancion(Usuario u) {
 		Connection con = Conexion.getConexion();
 		if (con != null) {
 			PreparedStatement ps=null;
 			try {
 				ps = con.prepareStatement(BORRARLISTAREPRODUCCION);
-				ps.setInt(1, this.id);
+				ps.setInt(1, u.getId());
 				ps.executeUpdate();
 				this.id=-1;
 			} catch (SQLException e) {
